@@ -1,7 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ChatApplicationChatterly" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/dark_grey</item>
     </style>
+
+    <style name="Theme.ChatApplicationChatterly" parent="Base.Theme.ChatApplicationChatterly" />
+
+    <!--    style for app bar-->
+    <style name="app_bar">
+        <item name="android:background">@color/dark_grey</item>
+        <item name="android:padding">@dimen/dp10</item>
+        <item name="fontFamily">@font/merriweather_sans_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!--    background of the whole app-->
+    <style name="backgroundColor">
+        <item name="color">@color/bg_grey_dark</item>
+    </style>
+
+    <!--    sign up page-->
+    <style name="sign_up">
+        <item name="hintTextColor">@color/bg_grey_light</item>
+        <item name="backgroundTint">@color/dark_grey</item>
+        <item name="textFillColor">@color/white</item>
+    </style>
+
 </resources>

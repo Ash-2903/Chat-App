@@ -2,8 +2,34 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ChatApplicationChatterly" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/light_blue</item>
     </style>
 
     <style name="Theme.ChatApplicationChatterly" parent="Base.Theme.ChatApplicationChatterly" />
+
+<!--    style for app bar-->
+    <style name="app_bar">
+        <item name="android:background">@color/light_blue</item>
+        <item name="android:padding">@dimen/dp10</item>
+        <item name="fontFamily">@font/merriweather_sans_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+<!--    background of the whole app-->
+    <style name="backgroundColor">
+        <item name="color">@color/bg_grey_light</item>
+    </style>
+
+<!--    sign up page-->
+    <style name="sign_up">
+        <item name="hintTextColor">@color/dark_grey</item>
+        <item name="backgroundTint">@color/bg_grey_light</item>
+        <item name="textFillColor">@color/black</item>
+    </style>
+
+<!--    buttons-->
+    <style name="btn">
+        <item name="backgroundTint">#87C4FF</item>
+    </style>
+
 </resources>

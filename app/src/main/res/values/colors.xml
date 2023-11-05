@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+<!--    common-->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="fb_blue">#3876BF</color>
+
+<!--    light mode -->
+    <color name="light_blue">#7c8ecc</color>
+    <color name="bg_grey_light">#EEEEEE</color>
+
+<!--    dark mode-->
+    <color name="bg_grey_dark">#232D3F</color>
+    <color name="dark_grey">#393E46</color>
+<!--    <color name="dark_blue">#36457a</color>    app bar in dark mode -->
+
 </resources>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/backgroundColor"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".SignUpActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp120"
+            android:paddingTop="@dimen/dp28"
+            android:contentDescription="@string/app_icon"
+            android:src="@drawable/chat_app_icon_circle" />
+
+<!--        <EditText-->
+<!--            android:id="@+id/editTextPhone"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ems="10"-->
+<!--            android:inputType="phone" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/editTextNumberPassword"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ems="10"-->
+<!--            android:inputType="numberPassword" />-->
+
+        <EditText
+            android:id="@+id/username_input"
+            android:layout_width="match_parent"
+            style="@style/sign_up"
+            android:layout_height="@dimen/dp60"
+            android:layout_marginStart="@dimen/dp25"
+            android:layout_marginEnd="@dimen/dp25"
+            android:layout_marginTop="@dimen/dp18"
+            android:layout_marginBottom="@dimen/dp18"
+            android:background="@drawable/custom_edit_text_rounded"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="@dimen/dp12"
+            android:hint="@string/username"
+            android:inputType="text"
+            android:paddingStart="@dimen/dp12"
+            android:paddingEnd="@dimen/dp12" />
+
+        <EditText
+            android:id="@+id/email_input"
+            android:layout_width="match_parent"
+            style="@style/sign_up"
+            android:layout_height="@dimen/dp60"
+            android:layout_marginStart="@dimen/dp25"
+            android:layout_marginEnd="@dimen/dp25"
+            android:background="@drawable/custom_edit_text_rounded"
+            android:drawableStart="@drawable/baseline_email_24"
+            android:drawablePadding="@dimen/dp12"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/dp12"
+            android:paddingEnd="@dimen/dp12" />
+
+        <EditText
+            android:id="@+id/password_input"
+            android:layout_width="match_parent"
+            style="@style/sign_up"
+            android:layout_height="@dimen/dp60"
+            android:layout_marginStart="@dimen/dp25"
+            android:layout_marginEnd="@dimen/dp25"
+            android:layout_marginTop="@dimen/dp18"
+            android:layout_marginBottom="@dimen/dp18"
+            android:background="@drawable/custom_edit_text_rounded"
+            android:drawableStart="@drawable/baseline_key_24"
+            android:drawablePadding="@dimen/dp12"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:paddingStart="@dimen/dp12"
+            android:paddingEnd="@dimen/dp12" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@color/bg_grey_light"
+            android:text="@string/submit" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp18"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp18"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:drawableStart="@drawable/ic_google"
+                android:paddingHorizontal="@dimen/dp18"
+                android:text="Google"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                app:icon="@drawable/ic_google" app:iconGravity="textStart"
+                app:cornerRadius="@dimen/dp8" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp18"
+                android:layout_weight="1"
+                android:backgroundTint="@color/fb_blue"
+                android:drawableStart="@drawable/ic_fb"
+                android:text="Facebook"
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_fb" app:iconGravity="textStart"
+                app:cornerRadius="@dimen/dp8" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>
