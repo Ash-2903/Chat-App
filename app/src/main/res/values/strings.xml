@@ -6,4 +6,10 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="submit">Submit</string>
+    <string name="sign_up">Sign up</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="sign_in">Sign In</string>
+    <string name="txtSignIn">Already have an account ? Sign In</string>
+    <string name="txtSignUp">Don\'t have an account ? Sign Up</string>
 </resources>
