@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "537744600808",
+    "project_id": "chatterly-f36e2",
+    "storage_bucket": "chatterly-f36e2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537744600808:android:2f54973f4159664769635d",
+        "android_client_info": {
+          "package_name": "com.example.chatapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAjzFDGSgtqSX5YBHSOOdYWiGq6vZ1_uc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
