@@ -10,9 +10,10 @@
 <!--    style for app bar-->
     <style name="app_bar">
         <item name="android:background">@color/light_blue</item>
-        <item name="android:padding">@dimen/dp10</item>
+        <item name="android:padding">@dimen/dp7</item>
         <item name="fontFamily">@font/merriweather_sans_bold</item>
         <item name="android:textSize">20sp</item>
+        <item name="backgroundTint">@color/light_blue</item>
     </style>
 
 <!--    background of the whole app-->
