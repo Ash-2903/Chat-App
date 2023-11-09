@@ -28,4 +28,12 @@
         <item name="textFillColor">@color/white</item>
     </style>
 
+    <!--    Tab Layout-->
+    <color name="tabL_grey_lGray">#7D7C7C</color>
+    <color name="tabText_blue_lBlue">#87C4FF</color>
+    <color name="tabText_white_grey">#D1D1D1</color>
+
+    <!--    Recycler View-->
+    <color name="rView_white_black">@color/white</color>
+
 </resources>

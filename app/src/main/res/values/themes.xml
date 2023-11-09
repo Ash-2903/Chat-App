@@ -33,4 +33,12 @@
         <item name="backgroundTint">#87C4FF</item>
     </style>
 
+<!--    Tab Layout-->
+    <color name="tabL_grey_lGray">#D1D1D1</color>
+    <color name="tabText_blue_lBlue">#7c8ecc</color>
+    <color name="tabText_white_grey">#FFFFFFFF</color>
+
+<!--    Recycler View-->
+    <color name="rView_white_black">@color/black</color>
+
 </resources>

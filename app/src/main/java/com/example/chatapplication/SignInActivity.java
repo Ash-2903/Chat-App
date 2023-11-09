@@ -104,7 +104,7 @@ public class SignInActivity extends AppCompatActivity {
         binding.googleSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SignInActivity.this, "google btn clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SignInActivity.this, "google btn clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = googleClient.getSignInIntent();
                 startActivityForResult(intent,1234);
 
@@ -142,7 +142,7 @@ public class SignInActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
 
-                                    Toast.makeText(SignInActivity.this, "hiii "+ user.getDisplayName() +" u are logged in through google", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignInActivity.this, "Welcome!! "+ user.getDisplayName(), Toast.LENGTH_SHORT).show();
 
                                 }
                                 else {

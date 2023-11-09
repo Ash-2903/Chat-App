@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="5"
+        android:weightSum="6"
         style="@style/app_bar">
 
         <TextView
@@ -20,18 +20,16 @@
             android:layout_height="wrap_content"
             android:text="@string/app"
             style="@style/app_bar"
-            android:layout_weight="4"
+            android:layout_weight="5.5"
             android:textColor="@color/white" />
 
         <ImageButton
             android:id="@+id/menuBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            style="@style/app_bar"
+            android:layout_width="@dimen/dp21"
+            android:layout_height="@dimen/dp21"
+            android:layout_gravity="center_vertical"
             android:foregroundGravity="right"
-            android:src="@drawable/ic_menu" />
+            android:background="@drawable/ic_menu" />
 
     </LinearLayout>
 
@@ -39,13 +37,15 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/app_bar"
-        android:elevation="@dimen/dp7"
-        app:tabIndicatorColor="@color/white"
-        app:tabMaxWidth="0dp"
-        app:tabGravity="fill"
+        app:tabIndicatorHeight="0dp"
+        android:background="@drawable/tab_background"
+        android:elevation="@dimen/dp4"
+        app:tabGravity="center"
         app:tabMode="fixed"
-        app:tabTextColor="@color/white" />
+        android:layout_margin="@dimen/dp12"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/tabText_blue_lBlue"
+        app:tabTextColor="@color/tabText_white_grey" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

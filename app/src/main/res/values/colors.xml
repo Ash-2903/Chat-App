@@ -5,10 +5,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="fb_blue">#3876BF</color>
+    <color name="darker_blue">#5A668F</color>
+    <color name="darker_grey">#B4B4B3</color>
 
 <!--    light mode -->
     <color name="light_blue">#7c8ecc</color>
-    <color name="bg_grey_light">#EEEEEE</color>
+    <color name="bg_grey_light">#EDEDED</color>
+    <color name="grey">#D1D1D1</color>
 
 <!--    dark mode-->
     <color name="bg_grey_dark">#232D3F</color>

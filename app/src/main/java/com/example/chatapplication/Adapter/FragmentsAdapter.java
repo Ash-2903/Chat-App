@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.chatapplication.Fragments.ChatsFragment;
+import com.example.chatapplication.Fragments.SocialFragment;
 
 public class FragmentsAdapter extends FragmentPagerAdapter {
     public FragmentsAdapter(@NonNull FragmentManager fm) {
@@ -19,15 +20,14 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0 : return new ChatsFragment();
-            case 1 : return new ChatsFragment();
-            case 2 : return new ChatsFragment();
+            case 1 : return new SocialFragment();
             default: return new ChatsFragment();
         }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Nullable
@@ -37,10 +37,9 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         if(position == 0) {
             title = "CHATS";
         } else if (position == 1) {
-            title = "CALLS";
-        } else if (position == 2){
-            title = "STATUS";
+            title = "SOCIAL CIRCLE";
         }
         return title;
     }
+
 }
