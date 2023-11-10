@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/chat_incoming"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="@dimen/dp5"
+    android:layout_marginTop="@dimen/dp7"
+    android:layout_marginEnd="@dimen/dp7"
+    android:paddingStart="@dimen/dp1"
+    android:paddingEnd="@dimen/dp10"
+    android:maxWidth="@dimen/dp320"
+    android:maxHeight="@dimen/dp400"
+    android:minHeight="@dimen/dp30">
+
+    <TextView
+        android:id="@+id/receiveText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp8"
+        android:paddingBottom="@dimen/dp8"
+        android:singleLine="false"
+        android:maxWidth="@dimen/dp270"
+        android:minWidth="@dimen/dp50"
+        android:textColor="@color/chat_texts"
+        android:text="text view is kinda umm now ok ig wjhhjj shjhdb njasnajsh jsbjhass whbshgwd"
+        app:layout_constraintBottom_toToTopOf="@+id/receiveTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/receiveTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp4"
+        android:layout_marginBottom="@dimen/dp3"
+        android:text="5:30 PM"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/receiveText" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp12" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+

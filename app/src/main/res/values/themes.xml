@@ -41,4 +41,8 @@
 <!--    Recycler View-->
     <color name="rView_white_black">@color/black</color>
 
+<!--    Chats-->
+    <color name="chat_texts">@color/black</color>
+    <color name="outgoing_chats">@color/lighter_blue</color>
+
 </resources>

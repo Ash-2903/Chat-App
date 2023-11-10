@@ -15,6 +15,7 @@ import com.example.chatapplication.Adapter.UsersAdapter;
 import com.example.chatapplication.R;
 import com.example.chatapplication.databinding.FragmentChatsBinding;
 import com.example.chatapplication.models.Users;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -57,7 +58,8 @@ public class ChatsFragment extends Fragment {
                     Users users = dataSnapshot.getValue(Users.class);
                     assert users != null; // to solve null pointer exception warning
                     users.setUserId(dataSnapshot.getKey());
-                    list.add(users);
+                    if(!users.getUserId().equals(FirebaseAuth.getInstance().getUid()))
+                        list.add(users);
                 }
                 adapter.notifyDataSetChanged();
             }

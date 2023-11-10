@@ -29,11 +29,15 @@
     </style>
 
     <!--    Tab Layout-->
-    <color name="tabL_grey_lGray">#7D7C7C</color>
-    <color name="tabText_blue_lBlue">#87C4FF</color>
+    <color name="tabL_grey_lGray">#393E46</color>
+    <color name="tabText_blue_lBlue">#2C74B3</color>
     <color name="tabText_white_grey">#D1D1D1</color>
 
     <!--    Recycler View-->
     <color name="rView_white_black">@color/white</color>
+
+    <!--    Chats-->
+    <color name="chat_texts">@color/white</color>
+    <color name="outgoing_chats">@color/light_blue</color>
 
 </resources>
