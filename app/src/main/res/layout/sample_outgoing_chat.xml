@@ -36,7 +36,7 @@
             android:textColor="@color/chat_texts"
             android:maxWidth="@dimen/dp270"
             android:minWidth="@dimen/dp50"
-            android:text="send text vie w hows it omgggg what u to know i love you i need to let you knowwwwww"
+            android:text="send text vie w how"
             app:layout_constraintBottom_toTopOf="@+id/senderTime"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guideline"

@@ -24,7 +24,7 @@
         android:minWidth="@dimen/dp50"
         android:textColor="@color/chat_texts"
         android:text="text view is kinda umm now ok ig wjhhjj shjhdb njasnajsh jsbjhass whbshgwd"
-        app:layout_constraintBottom_toToTopOf="@+id/receiveTime"
+        app:layout_constraintBottom_toTopOf="@+id/receiveTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
