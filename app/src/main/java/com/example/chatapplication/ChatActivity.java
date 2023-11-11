@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.example.chatapplication.Adapter.ChatAdapter;
 import com.example.chatapplication.databinding.ActivityChatBinding;
@@ -87,24 +86,27 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String msg = binding.messageInput.getText().toString();
-                final Message message = new Message(senderId,msg);
-                message.setTimeStamp(new Date().getTime());
-                binding.messageInput.setText("");
+                if(!msg.equals("")) {
+                    final Message message = new Message(senderId, msg);
+                    message.setTimeStamp(new Date().getTime());
+                    binding.messageInput.setText("");
 
-                database.getReference().child("chats").child(senderRoom).push().setValue(message)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                database.getReference().child("chats").child(recieverRoom).push().setValue(message)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
+                    database.getReference().child("chats").child(senderRoom).push().setValue(message)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    database.getReference().child("chats").child(recieverRoom).push().setValue(message)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
 
-                                            }
-                                        });
-                            }
-                        });
-            }
+                                                }
+                                            });
+                                }
+                            });
+                    }
+                }
+
         });
 
     }
