@@ -10,7 +10,6 @@
     android:paddingStart="@dimen/dp1"
     android:paddingEnd="@dimen/dp10"
     android:maxWidth="@dimen/dp320"
-    android:maxHeight="@dimen/dp400"
     android:minHeight="@dimen/dp30">
 
     <TextView

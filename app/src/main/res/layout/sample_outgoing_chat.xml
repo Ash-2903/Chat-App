@@ -15,8 +15,7 @@
         android:maxWidth="@dimen/dp310"
         android:minHeight="@dimen/dp30"
         android:paddingStart="@dimen/dp10"
-        android:paddingEnd="@dimen/dp10"
-        android:maxHeight="@dimen/dp400">
+        android:paddingEnd="@dimen/dp10">
 
         <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
