@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/senderText"
             android:layout_marginStart="@dimen/dp8"
-            android:layout_marginTop="@dimen/dp4"
+            android:layout_marginTop="@dimen/dp9"
             android:layout_marginBottom="@dimen/dp3"
             android:singleLine="false"
             android:textColor="@color/chat_texts"

@@ -1,5 +1,7 @@
 package com.example.chatapplication;
 
+import static java.text.DateFormat.getTimeInstance;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,14 +21,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity {
 
     ActivityChatBinding binding;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +68,11 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         binding.chatRView.setLayoutManager(linearLayoutManager);
 
+//        if(chatAdapter.chatItemLongPressed()) {
+//            binding.deleteChat.setVisibility(View.VISIBLE);
+//            binding.chatMenu.setVisibility(View.GONE);
+//        }
+
         String senderRoom = senderId + recieverId;
         String recieverRoom = recieverId + senderId;
 
@@ -88,6 +101,8 @@ public class ChatActivity extends AppCompatActivity {
                 String msg = binding.messageInput.getText().toString();
                 if(!msg.equals("")) {
                     final Message message = new Message(senderId, msg);
+                    //message.setTimeStamp(new Date().getTime());
+
                     message.setTimeStamp(new Date().getTime());
                     binding.messageInput.setText("");
 

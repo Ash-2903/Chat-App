@@ -40,4 +40,7 @@
     <color name="chat_texts">@color/white</color>
     <color name="outgoing_chats">@color/light_blue</color>
 
+    <!--    straight line-->
+    <color name="line_grey_black">@color/bg_grey_dark</color>
+
 </resources>

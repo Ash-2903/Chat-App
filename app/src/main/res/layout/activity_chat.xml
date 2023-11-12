@@ -80,10 +80,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username"
+                android:layout_weight="5"
                 android:textColor="@color/white"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="@dimen/dp10"
                 android:textSize="18sp"/>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:foregroundGravity="right">
+
+                <ImageButton
+                    android:id="@+id/chatMenu"
+                    android:layout_width="@dimen/dp21"
+                    android:layout_height="@dimen/dp21"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="visible"
+                    android:background="@drawable/ic_menu"
+                    android:foregroundGravity="right" />
+
+                <ImageButton
+                    android:id="@+id/deleteChat"
+                    android:layout_width="@dimen/dp21"
+                    android:layout_height="@dimen/dp21"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_delete"
+                    android:visibility="gone"
+                    android:foregroundGravity="right" />
+
+
+
+            </FrameLayout>
+
+
 
         </LinearLayout>
 
