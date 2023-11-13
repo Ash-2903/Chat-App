@@ -17,9 +17,7 @@
     </style>
 
     <!--    background of the whole app-->
-    <style name="backgroundColor">
-        <item name="color">@color/bg_grey_dark</item>
-    </style>
+    <color name="bg_app">@color/bg_black</color>
 
     <!--    sign up page-->
     <style name="sign_up">
@@ -42,5 +40,8 @@
 
     <!--    straight line-->
     <color name="line_grey_black">@color/bg_grey_dark</color>
+
+    <!--    color change on long press-->
+    <color name="longPress">@color/bg_grey_dark</color>
 
 </resources>

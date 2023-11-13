@@ -17,14 +17,12 @@
     </style>
 
 <!--    background of the whole app-->
-    <style name="backgroundColor">
-        <item name="color">@color/bg_grey_light</item>
-    </style>
+    <color name="bg_app">@color/bg_grey_light</color>
 
 <!--    sign up page-->
     <style name="sign_up">
         <item name="hintTextColor">@color/dark_grey</item>
-        <item name="backgroundTint">@color/bg_grey_light</item>
+        <item name="backgroundTint">@color/grey</item>
         <item name="textFillColor">@color/black</item>
     </style>
 
@@ -46,5 +44,8 @@
     <color name="outgoing_chats">@color/lighter_blue</color>
 
 <!--    straight line-->
-<color name="line_grey_black">#c0c0c0</color>
+    <color name="line_grey_black">#c0c0c0</color>
+
+<!--    color change on long press-->
+    <color name="longPress">@color/darker_grey</color>
 </resources>

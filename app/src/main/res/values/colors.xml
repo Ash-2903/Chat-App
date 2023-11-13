@@ -16,6 +16,7 @@
 
 <!--    dark mode-->
     <color name="bg_grey_dark">#232D3F</color>
+    <color name="bg_black">#191717</color>
     <color name="dark_grey">#393E46</color>
 
 <!--    <color name="dark_blue">#36457a</color>    app bar in dark mode -->
