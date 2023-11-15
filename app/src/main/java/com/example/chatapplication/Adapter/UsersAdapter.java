@@ -14,9 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.chatapplication.ChatActivity;
 import com.example.chatapplication.R;
 import com.example.chatapplication.models.Users;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
@@ -50,7 +57,36 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 context.startActivity(intent);
             }
         });
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("chats").child(FirebaseAuth.getInstance().getUid() + users.getUserId());
+        databaseReference.orderByChild("timeStamp").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChildren()) {
+                            for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                String lMsg = Objects.requireNonNull(dataSnapshot.child("message").getValue()).toString();
+                                if(lMsg.length()>30) {           // add lMsg!=null condition too if necessary
+                                    holder.lMessage.setText(lMsg.substring(0,30));
+                                } else {
+                                    holder.lMessage.setText(lMsg);
+                                }
+
+                            }
+                        } else {
+                            String[] name = users.getUsername().split(" ");
+                            String defaultMsg = "Say Hi To " + name[0] + " \uD83D\uDC4B";
+                            holder.lMessage.setText(defaultMsg);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
     }
+
 
     @Override
     public int getItemCount() {

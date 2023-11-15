@@ -11,8 +11,6 @@ public class Message {
         this.timeStamp = timeStamp;
     }
 
-
-
     public Message(String uId, String message) {
         this.uId = uId;
         this.message = message;

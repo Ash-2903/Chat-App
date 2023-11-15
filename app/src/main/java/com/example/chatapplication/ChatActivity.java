@@ -82,7 +82,6 @@ public class ChatActivity extends AppCompatActivity {
                             Message model = dataSnapshot.getValue(Message.class);
                             model.setMessageId(dataSnapshot.getKey());
                             flag++;
-                            //model.setrMessageId();
                             int finalFlag = flag;
                             database.getReference().child("chats").child(receiverRoom).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -105,6 +104,7 @@ public class ChatActivity extends AppCompatActivity {
                             messages.add(model);
                         }
                         chatAdapter.notifyDataSetChanged();
+                        //chatAdapter.notify();
                     }
 
                     @Override

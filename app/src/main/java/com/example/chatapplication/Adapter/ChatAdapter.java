@@ -130,7 +130,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public boolean onLongClick(View v) {
 
                     // vibrate for 100 milliseconds
-                    vibrate.vibrate(100);
+                    vibrate.vibrate(50);
 
                     // To calculate location of the view and where to place pop up window
                     int popupWidth = popUpView.getMeasuredWidth();
@@ -173,8 +173,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                     String receiverRoom = recId + FirebaseAuth.getInstance().getUid();
                                     String msgId = message.getrMessageId();
                                     Log.d("tiger", "onClick: " + msgId);
-                                    database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).setValue(null);
-                                    database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).setValue(null);
+                                    database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).removeValue();
+                                    database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).removeValue();
+                                    //notifyItemRemoved(position);
                                     popUp.dismiss();
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
