@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.EventLog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,16 +38,19 @@ import com.example.chatapplication.ChatActivity;
 import com.example.chatapplication.R;
 import com.example.chatapplication.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
@@ -166,8 +171,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                                     String senderRoom = FirebaseAuth.getInstance().getUid() + recId;
                                     String receiverRoom = recId + FirebaseAuth.getInstance().getUid();
+                                    String msgId = message.getrMessageId();
+                                    Log.d("tiger", "onClick: " + msgId);
                                     database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).setValue(null);
-                                    database.getReference().child("chats").child(receiverRoom).child(message.getMessageId()).setValue(null);
+                                    database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).setValue(null);
                                     popUp.dismiss();
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -183,10 +190,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+
     @Override
     public int getItemCount() {
         return messageModel.size();
     }
+
+
 
     public class RecieverViewHolder extends RecyclerView.ViewHolder {
         TextView rMsg, rTime;

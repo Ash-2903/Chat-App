@@ -2,7 +2,7 @@ package com.example.chatapplication.models;
 
 public class Message {
 
-    String uId, message, messageId;
+    String uId, message, messageId, rMessageId;
     long timeStamp;
 
     public Message(String uId, String message, long timeStamp) {
@@ -44,6 +44,14 @@ public class Message {
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+
+    public String getrMessageId() {
+        return rMessageId;
+    }
+
+    public void setrMessageId(String rMessageId) {
+        this.rMessageId = rMessageId;
     }
 
     public long getTimeStamp() {
