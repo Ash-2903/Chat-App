@@ -3,6 +3,7 @@
     <style name="Base.Theme.ChatApplicationChatterly" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/dark_grey</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <style name="Theme.ChatApplicationChatterly" parent="Base.Theme.ChatApplicationChatterly" />

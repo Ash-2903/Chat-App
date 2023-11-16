@@ -2,6 +2,7 @@ package com.example.chatapplication;
 
 import static java.text.DateFormat.getTimeInstance;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.chatapplication.Adapter.ChatAdapter;
+import com.example.chatapplication.Adapter.UsersAdapter;
 import com.example.chatapplication.databinding.ActivityChatBinding;
 import com.example.chatapplication.models.Message;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +31,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import androidx.activity.OnBackPressedCallback;
+
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -56,8 +60,6 @@ public class ChatActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChatActivity.this,MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -112,6 +114,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     }
                 });
+
 
 //        DatabaseReference senderRoomRef = FirebaseDatabase.getInstance().getReference().child("chats").child(senderRoom);
 //        DatabaseReference receiverRoomRef = FirebaseDatabase.getInstance().getReference().child("chats").child(receiverRoom);
@@ -191,5 +194,13 @@ public class ChatActivity extends AppCompatActivity {
 
         });
 
+
+
+
     }
+
+
+
+
+
 }
