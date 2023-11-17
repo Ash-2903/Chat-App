@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapplication.ChatActivity;
 import com.example.chatapplication.R;
+import com.example.chatapplication.models.Message;
 import com.example.chatapplication.models.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -73,11 +74,19 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 if(snapshot.hasChildren()) {
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         String lMsg = Objects.requireNonNull(dataSnapshot.child("message").getValue()).toString();
-                        if(lMsg.length()>30) {           // add lMsg!=null condition too if necessary
-                            holder.lMessage.setText(lMsg.substring(0,30));
-                        } else {
-                            holder.lMessage.setText(lMsg);
+                        Message msg = dataSnapshot.getValue(Message.class);
+                        String lastPersonToText = "You : ";
+                        String finalMsg;
+                        assert msg != null;
+                        if(!msg.getuId().equals(FirebaseAuth.getInstance().getUid())) {
+                            lastPersonToText = "~ ";
                         }
+                        if(lMsg.length()>30) {           // add lMsg!=null condition too if necessary
+                            finalMsg = lastPersonToText + lMsg.substring(0,30);
+                        } else {
+                            finalMsg = lastPersonToText + lMsg;
+                        }
+                        holder.lMessage.setText(finalMsg);
                     }
                 } else {
                     String[] name = users.getUsername().split(" ");
@@ -93,6 +102,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         });
 
     }
+
 
     @Override
     public int getItemCount() {

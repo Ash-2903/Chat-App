@@ -43,12 +43,15 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         if(item.getItemId() == R.id.setting) {
                             Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                            startActivity(intent);
                         } else if(item.getItemId() == R.id.gpChats) {
                             Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         } else if(item.getItemId() == R.id.logout) {
                             mAuth.signOut();
                             Intent intent = new Intent(MainActivity.this,SignInActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                         return false;
                     }
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         finish();
         startActivity(new Intent(this,MainActivity.class));
+        //overridePendingTransition(R.anim.slide_in_right,R.anim.slide_in_left);
     }
 
     @Override

@@ -14,6 +14,12 @@
     <string name="txtSignUp">Don\'t have an account ? Sign Up</string>
     <string name="settings">Settings</string>
 
+    <string-array name="spinner_items_gender">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
     <string name="default_web_client_id" translatable="false">537744600808-0qv22aq9v3qmrvtrvr3k0fmiktndrisq.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

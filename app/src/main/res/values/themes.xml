@@ -58,4 +58,10 @@
 
 <!--    color change on long press-->
     <color name="longPress">@color/darker_grey</color>
+
+<!--    sub texts-->
+    <color name="subText_grey_dGrey">@color/darker_grey</color>
+
+<!--    calender button color-->
+    <color name="calender_btn">@color/light_blue</color>
 </resources>

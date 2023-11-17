@@ -8,6 +8,15 @@
 
     <style name="Theme.ChatApplicationChatterly" parent="Base.Theme.ChatApplicationChatterly" />
 
+    <!--Slide Animation-->
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+
     <!--    style for app bar-->
     <style name="app_bar">
         <item name="android:background">@color/dark_grey</item>
@@ -44,5 +53,11 @@
 
     <!--    color change on long press-->
     <color name="longPress">@color/bg_grey_dark</color>
+
+    <!--    sub texts-->
+    <color name="subText_grey_dGrey">@color/dark_grey</color>
+
+    <!--    calender button color-->
+    <color name="calender_btn">@color/bg_grey_dark</color>
 
 </resources>
