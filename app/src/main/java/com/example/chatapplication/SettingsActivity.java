@@ -8,16 +8,18 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapplication.databinding.ActivitySettingsBinding;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -40,7 +41,9 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -71,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 String bio = snapshot.child("bio").getValue(String.class);
                 if(bio!=null) {
                     binding.bioDisplay.setText(bio);
+                    binding.bioEdit.setText(bio);
                 }
                 String dob = snapshot.child("dob").getValue(String.class);
                 if(dob!=null) {
@@ -86,6 +90,7 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 if(location!=null) {
                     binding.locationDisplay.setText(location);
                     binding.locationDisplay.setTextColor(getResources().getColor(R.color.darker_blue));
+                    binding.locationInput.setText(location);
                 }
             }
 
@@ -127,11 +132,11 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 }
 
                 String gender = binding.genderInput.getSelectedItem().toString();
-                if(!gender.equals("Prefer not to say")) {
+                if(!gender.equals("Prefer not to say"))
                     database.getReference().child("Users").child(currentUser.getUid()).child("gender").setValue(gender);
-                } else  {
-                    database.getReference().child("Users").child(currentUser.getUid()).child("gender").setValue(null);
-                }
+//              else
+//                  database.getReference().child("Users").child(currentUser.getUid()).child("gender").setValue(null);
+
 
                 String location = binding.locationInput.getText().toString();
                 if(!location.equals("")) {
@@ -164,21 +169,40 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
-        binding.switchThemes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        SwitchMaterial switchButton = binding.switchThemes;
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences sharedPreferences = getSharedPreferences("ThemePrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 if(isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor.putInt("SelectedTheme", AppCompatDelegate.MODE_NIGHT_YES);
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editor.putInt("SelectedTheme", AppCompatDelegate.MODE_NIGHT_NO);
                 }
+                editor.apply();
             }
         });
 
+        // Check if the app is in dark mode
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            // Set the switch to the checked state (for dark mode)
+            switchButton.setChecked(true);
+        } else {
+            // Set the switch to the unchecked state (for light mode)
+            switchButton.setChecked(false);
+        }
         boolean nightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
         binding.switchThemes.setChecked(nightModeOn);
 
     }
+
+
+
+
 
 
     @Override
