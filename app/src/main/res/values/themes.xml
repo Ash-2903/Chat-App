@@ -63,6 +63,9 @@
     <color name="subText_grey_dGrey">@color/darker_grey</color>
     <color name="subText_dGrey_grey">@color/dark_grey</color>
 
+<!--    card background-->
+    <color name="card_bg">@color/light_grey</color>
+
 <!--    calender button color-->
     <color name="calender_btn">@color/light_blue</color>
 </resources>

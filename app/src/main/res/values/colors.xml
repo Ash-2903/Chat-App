@@ -14,6 +14,7 @@
     <color name="lighter_blue">#cbd2eb</color>
     <color name="bg_grey_light">#EDEDED</color>
     <color name="grey">#D1D1D1</color>
+    <color name="light_grey">#d9d9d9</color>
 
 <!--    dark mode-->
     <color name="bg_grey_dark">#232D3F</color>

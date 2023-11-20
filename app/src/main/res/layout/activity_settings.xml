@@ -116,7 +116,6 @@
         android:layout_marginEnd="@dimen/dp5"
         android:background="@color/subText_grey_dGrey"/>
 
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -124,7 +123,7 @@
         android:layout_marginStart="@dimen/dp15"
         android:layout_marginEnd="@dimen/dp15"
         app:cardCornerRadius="@dimen/dp10"
-        app:cardBackgroundColor="@color/bg_app"
+        app:cardBackgroundColor="@color/card_bg"
         app:cardElevation="@dimen/dp10">
 
 
@@ -168,7 +167,7 @@
             android:layout_marginStart="@dimen/dp15"
             android:layout_marginEnd="@dimen/dp15"
             app:cardCornerRadius="@dimen/dp10"
-            app:cardBackgroundColor="@color/bg_app"
+            app:cardBackgroundColor="@color/card_bg"
             app:cardElevation="@dimen/dp10">
 
 
@@ -222,7 +221,7 @@
             android:layout_marginBottom="@dimen/dp8"
             android:layout_weight="1"
             app:cardCornerRadius="@dimen/dp10"
-            app:cardBackgroundColor="@color/bg_app"
+            app:cardBackgroundColor="@color/card_bg"
             app:cardElevation="@dimen/dp10">
 
 
@@ -277,7 +276,7 @@
         android:layout_marginStart="@dimen/dp15"
         android:layout_marginEnd="@dimen/dp15"
         app:cardCornerRadius="@dimen/dp10"
-        app:cardBackgroundColor="@color/bg_app"
+        app:cardBackgroundColor="@color/card_bg"
         app:cardElevation="@dimen/dp10">
 
         <LinearLayout
@@ -316,18 +315,30 @@
 
     </androidx.cardview.widget.CardView>
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/dp25"
+        android:layout_marginStart="@dimen/dp5"
+        android:layout_marginEnd="@dimen/dp5"
+        android:background="@color/subText_grey_dGrey"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp20"
         android:gravity="center"
+        android:layout_marginStart="@dimen/dp10"
+        android:layout_marginEnd="@dimen/dp10"
+        android:background="@color/card_bg"
         android:orientation="horizontal">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:text="Change Theme"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -342,6 +353,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="@dimen/dp10"
+        android:background="@color/card_bg"
+        android:layout_marginEnd="@dimen/dp10"
+        android:layout_marginStart="@dimen/dp10"
         android:layout_marginTop="@dimen/dp5"
         android:orientation="horizontal">
 
