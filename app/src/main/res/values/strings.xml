@@ -15,6 +15,7 @@
     <string name="settings">Settings</string>
 
     <string-array name="spinner_items_gender">
+        <item>Prefer not to say</item>
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
@@ -23,4 +24,5 @@
     <string name="default_web_client_id" translatable="false">537744600808-0qv22aq9v3qmrvtrvr3k0fmiktndrisq.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="defaultBio">Hello there ! Chatting my way through Chatterly.</string>
 </resources>

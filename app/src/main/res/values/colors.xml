@@ -7,6 +7,7 @@
     <color name="fb_blue">#3876BF</color>
     <color name="darker_blue">#5A668F</color>
     <color name="darker_grey">#B4B4B3</color>
+    <color name="red">#BE3144</color>
 
 <!--    light mode -->
     <color name="light_blue">#7c8ecc</color>

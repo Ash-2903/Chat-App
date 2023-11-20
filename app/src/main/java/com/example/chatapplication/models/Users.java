@@ -2,20 +2,23 @@ package com.example.chatapplication.models;
 
 public class Users {
 
-    String profilePic, username, mail, password, userId, lastMessage, status;
+    String profilePic, username, mail, password, userId, lastMessage, bio, dob, location, gender;
 
     public Users() {
 
     }
 
-    public Users(String profilePic, String username, String mail, String password, String userId, String lastMessage, String status) {
+    public Users(String profilePic, String username, String mail, String password, String userId, String lastMessage, String bio, String dob, String location, String gender) {
         this.profilePic = profilePic;
         this.username = username;
         this.mail = mail;
         this.password = password;
         this.userId = userId;
         this.lastMessage = lastMessage;
-        this.status = status;
+        this.bio = bio;
+        this.dob = dob;
+        this.location = location;
+        this.gender = gender;
     }
 
     public Users(String username, String mail, String password) {
@@ -72,11 +75,35 @@ public class Users {
         this.lastMessage = lastMessage;
     }
 
-    public String getStatus() {
-        return status;
+    public String getBio() {
+        return bio;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setBio(String status) {
+        this.bio = status;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

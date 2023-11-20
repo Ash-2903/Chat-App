@@ -2,6 +2,7 @@ package com.example.chatapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 
 
@@ -10,27 +11,150 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapplication.databinding.ActivitySettingsBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     ActivitySettingsBinding binding;
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
+        // display username and password always
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser!=null) {
+            // pfp
+            Picasso.get().load(currentUser.getPhotoUrl()).placeholder(R.drawable.profile).into(binding.userPfp);
+            // display username
+            binding.uName.setText(currentUser.getDisplayName());
+            // display user email
+            binding.uEmail.setText(currentUser.getEmail());
+        }
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        database.getReference().child("Users").child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String bio = snapshot.child("bio").getValue(String.class);
+                if(bio!=null) {
+                    binding.bioDisplay.setText(bio);
+                }
+                String dob = snapshot.child("dob").getValue(String.class);
+                if(dob!=null) {
+                    binding.dobDisplay.setText(dob);
+                    binding.dobDisplay.setTextColor(getResources().getColor(R.color.darker_blue));
+                }
+                String gender = snapshot.child("gender").getValue(String.class);
+                if(gender!=null) {
+                    binding.genderDisplay.setText(gender);
+                    binding.genderDisplay.setTextColor(getResources().getColor(R.color.darker_blue));
+                }
+                String location = snapshot.child("location").getValue(String.class);
+                if(location!=null) {
+                    binding.locationDisplay.setText(location);
+                    binding.locationDisplay.setTextColor(getResources().getColor(R.color.darker_blue));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // handle clicks on edit and submit icons
+        binding.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // button
+                binding.editBtn.setVisibility(View.GONE);
+                binding.setBtn.setVisibility(View.VISIBLE);
+                // bio
+                binding.bioDisplay.setVisibility(View.GONE);
+                binding.bioEdit.setVisibility(View.VISIBLE);
+                // dob
+                binding.dobDisplay.setVisibility(View.GONE);
+                binding.dobInput.setVisibility(View.VISIBLE);
+                // gender
+                binding.genderDisplay.setVisibility(View.GONE);
+                binding.genderInput.setVisibility(View.VISIBLE);
+                // location
+                binding.locationDisplay.setVisibility(View.GONE);
+                binding.locationInput.setVisibility(View.VISIBLE);
+            }
+        });
+
+        binding.setBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String bio = binding.bioEdit.getText().toString();
+                if(!bio.equals("Hello there ! Chatting my way through Chatterly.") && !bio.equals("")) {
+                    database.getReference().child("Users").child(currentUser.getUid()).child("bio").setValue(bio);
+                }
+
+                String gender = binding.genderInput.getSelectedItem().toString();
+                if(!gender.equals("Prefer not to say")) {
+                    database.getReference().child("Users").child(currentUser.getUid()).child("gender").setValue(gender);
+                } else  {
+                    database.getReference().child("Users").child(currentUser.getUid()).child("gender").setValue(null);
+                }
+
+                String location = binding.locationInput.getText().toString();
+                if(!location.equals("")) {
+                    database.getReference().child("Users").child(currentUser.getUid()).child("location").setValue(location);
+                }
+
+                // button
+                binding.setBtn.setVisibility(View.GONE);
+                binding.editBtn.setVisibility(View.VISIBLE);
+                // bio
+                binding.bioDisplay.setVisibility(View.VISIBLE);
+                binding.bioEdit.setVisibility(View.GONE);
+                // dob
+                binding.dobDisplay.setVisibility(View.VISIBLE);
+                binding.dobInput.setVisibility(View.GONE);
+                // gender
+                binding.genderDisplay.setVisibility(View.VISIBLE);
+                binding.genderInput.setVisibility(View.GONE);
+                // location
+                binding.locationDisplay.setVisibility(View.VISIBLE);
+                binding.locationInput.setVisibility(View.GONE);
+            }
+        });
 
         binding.dobInput.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +164,21 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
-        }
+        binding.switchThemes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+            }
+        });
+
+        boolean nightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        binding.switchThemes.setChecked(nightModeOn);
+
+    }
 
 
     @Override
@@ -54,9 +192,10 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         String dob = sdf.format(calendar.getTime());
         Toast.makeText(this, "dob : " + dob, Toast.LENGTH_SHORT).show();
         Log.d("dob", "onDateSet: " + dob);
-        TextView dobTextView = (TextView) findViewById(R.id.dobDisplay);
+        TextView dobTextView = findViewById(R.id.dobDisplay);
         dobTextView.setText(dob);
-
+        dobTextView.setTextColor(getResources().getColor(R.color.darker_blue));
+        FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("dob").setValue(dob);
     }
 
 
