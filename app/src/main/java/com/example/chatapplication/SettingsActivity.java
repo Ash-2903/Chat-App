@@ -55,8 +55,8 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     FirebaseStorage storage;
-    private ActivityResultLauncher<PickVisualMediaRequest> pickPfp;
-    Uri imageUri;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,6 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         // display username and password always
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser!=null) {
-            // pfp
-
             // display username
             binding.uName.setText(currentUser.getDisplayName());
             // display user email
@@ -94,6 +92,7 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 Uri pfpUri = Uri.parse(snapshot.child("profilePic").getValue(String.class));
                 Picasso.get().load(pfpUri).placeholder(R.drawable.profile).into(binding.userPfp);
                 String bio = snapshot.child("bio").getValue(String.class);
+                binding.uName.setText(snapshot.child("username").getValue(String.class));
                 if(bio!=null) {
                     binding.bioDisplay.setText(bio);
                     binding.bioEdit.setText(bio);
@@ -125,9 +124,6 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         binding.changePfp.setOnClickListener(v -> activityResultLauncher.launch("image/*"));
 
 
-
-
-
         // handle clicks on edit and submit icons
         binding.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +133,9 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 binding.setBtn.setVisibility(View.VISIBLE);
                 // profile pic
                 binding.changePfp.setVisibility(View.VISIBLE);
+                // username
+                binding.uNameEdit.setVisibility(View.VISIBLE);
+                binding.uName.setVisibility(View.GONE);
                 // bio
                 binding.bioDisplay.setVisibility(View.GONE);
                 binding.bioEdit.setVisibility(View.VISIBLE);
@@ -155,6 +154,9 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         binding.setBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String username = binding.uNameEdit.getText().toString();
+                database.getReference().child("Users").child(currentUser.getUid()).child("username").setValue(username);
 
                 String bio = binding.bioEdit.getText().toString();
                 if(!bio.equals("Hello there ! Chatting my way through Chatterly.") && !bio.equals("")) {
@@ -178,6 +180,9 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 binding.editBtn.setVisibility(View.VISIBLE);
                 // profile pic
                 binding.changePfp.setVisibility(View.GONE);
+                // username
+                binding.uName.setVisibility(View.VISIBLE);
+                binding.uNameEdit.setVisibility(View.GONE);
                 // bio
                 binding.bioDisplay.setVisibility(View.VISIBLE);
                 binding.bioEdit.setVisibility(View.GONE);
@@ -233,7 +238,6 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
     }
 
 
-
     ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             result -> {
@@ -269,8 +273,6 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("dob").setValue(dob);
     }
 
-
-
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
@@ -293,7 +295,6 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
             ((SettingsActivity) requireActivity()).onDateSet(view, year, month, day);
         }
     }
-
 
 }
 

@@ -151,6 +151,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     users.setUserId(user.getUid());
                                     users.setUsername(user.getDisplayName());
                                     users.setProfilePic(user.getPhotoUrl().toString());
+                                    users.setMail(user.getEmail());
 
                                     database.getReference().child("Users").child(user.getUid()).setValue(users);
 

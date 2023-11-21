@@ -64,6 +64,17 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        binding.navBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this, ProfileViewActivity.class);
+                intent.putExtra("uName",userName);
+                intent.putExtra("profilePic",pfp);
+                intent.putExtra("rId",recieverId);
+                startActivity(intent);
+            }
+        });
+
         final ArrayList<Message> messages = new ArrayList<>();
         final ChatAdapter chatAdapter = new ChatAdapter(messages,this,recieverId);
         binding.chatRView.setAdapter(chatAdapter);
