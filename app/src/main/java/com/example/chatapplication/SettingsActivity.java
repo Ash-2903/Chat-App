@@ -1,15 +1,24 @@
 package com.example.chatapplication;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +28,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapplication.databinding.ActivitySettingsBinding;
+import com.example.chatapplication.models.Users;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,10 +38,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -38,6 +54,9 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
     ActivitySettingsBinding binding;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+    FirebaseStorage storage;
+    private ActivityResultLauncher<PickVisualMediaRequest> pickPfp;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +68,13 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         // display username and password always
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser!=null) {
             // pfp
-            Picasso.get().load(currentUser.getPhotoUrl()).placeholder(R.drawable.profile).into(binding.userPfp);
+
             // display username
             binding.uName.setText(currentUser.getDisplayName());
             // display user email
@@ -71,6 +91,8 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         database.getReference().child("Users").child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Uri pfpUri = Uri.parse(snapshot.child("profilePic").getValue(String.class));
+                Picasso.get().load(pfpUri).placeholder(R.drawable.profile).into(binding.userPfp);
                 String bio = snapshot.child("bio").getValue(String.class);
                 if(bio!=null) {
                     binding.bioDisplay.setText(bio);
@@ -100,6 +122,12 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
+        binding.changePfp.setOnClickListener(v -> activityResultLauncher.launch("image/*"));
+
+
+
+
+
         // handle clicks on edit and submit icons
         binding.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +135,8 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 // button
                 binding.editBtn.setVisibility(View.GONE);
                 binding.setBtn.setVisibility(View.VISIBLE);
+                // profile pic
+                binding.changePfp.setVisibility(View.VISIBLE);
                 // bio
                 binding.bioDisplay.setVisibility(View.GONE);
                 binding.bioEdit.setVisibility(View.VISIBLE);
@@ -146,6 +176,8 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 // button
                 binding.setBtn.setVisibility(View.GONE);
                 binding.editBtn.setVisibility(View.VISIBLE);
+                // profile pic
+                binding.changePfp.setVisibility(View.GONE);
                 // bio
                 binding.bioDisplay.setVisibility(View.VISIBLE);
                 binding.bioEdit.setVisibility(View.GONE);
@@ -202,7 +234,22 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
 
 
 
+    ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            result -> {
+                if (result != null) {
+                    binding.userPfp.setImageURI(result);
+                    final StorageReference reference = storage.getReference().child("profilePic").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
 
+                    reference.putFile(result).addOnSuccessListener(taskSnapshot -> {
+                        reference.getDownloadUrl().addOnSuccessListener(uri -> {
+                            database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("profilePic").setValue(uri.toString());
+                        });
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
 
 
     @Override

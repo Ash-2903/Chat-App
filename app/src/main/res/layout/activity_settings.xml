@@ -6,220 +6,134 @@
     android:layout_height="match_parent"
     android:background="@color/bg_app">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".SettingsActivity">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="6"
-        style="@style/app_bar">
+        android:orientation="vertical"
+        tools:context=".SettingsActivity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="6"
+            style="@style/app_bar">
+
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="@dimen/dp25"
+                android:layout_height="@dimen/dp25"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/dp5"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/main_navbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Profile"
+                style="@style/app_bar"
+                android:layout_weight="5.5"
+                android:textColor="@color/white" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/editBtn"
+                    android:layout_width="@dimen/dp21"
+                    android:layout_height="@dimen/dp21"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/edit"
+                    android:foregroundGravity="right" />
+
+                <ImageView
+                    android:id="@+id/setBtn"
+                    android:layout_width="@dimen/dp21"
+                    android:layout_height="@dimen/dp21"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"
+                    android:src="@drawable/check"
+                    android:foregroundGravity="right" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp100"
+            android:id="@+id/userPfp"
+            android:layout_margin="@dimen/dp20"
+            android:src="@drawable/profile"/>
 
         <ImageView
-            android:id="@+id/backBtn"
-            android:layout_width="@dimen/dp25"
-            android:layout_height="@dimen/dp25"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/changePfp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp32"
+            android:layout_gravity="center"
+            android:layout_marginTop="-45dp"
+            android:visibility="gone"
+            android:paddingStart="@dimen/dp50"
+            android:paddingEnd="@dimen/dp1"
+            android:src="@drawable/ic_camera" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/uName"
+            android:text="@string/username"
+            android:gravity="center"
+            android:textSize="23sp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/uNameEdit"
+            android:text="@string/username"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/bg_app"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bioDisplay"
+            android:text="@string/defaultBio"
+            android:layout_marginTop="@dimen/dp15"
+            android:gravity="center"
+            android:textColor="@color/subText_dGrey_grey"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bioEdit"
+            android:text="@string/defaultBio"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/dp17"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:background="@color/bg_app"
+            android:textColor="@color/subText_dGrey_grey"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/dp25"
+            android:layout_marginStart="@dimen/dp5"
             android:layout_marginEnd="@dimen/dp5"
-            android:src="@drawable/ic_back" />
+            android:background="@color/subText_grey_dGrey"/>
 
-        <TextView
-            android:id="@+id/main_navbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your Profile"
-            style="@style/app_bar"
-            android:layout_weight="5.5"
-            android:textColor="@color/white" />
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
-
-            <ImageView
-                android:id="@+id/editBtn"
-                android:layout_width="@dimen/dp21"
-                android:layout_height="@dimen/dp21"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/edit"
-                android:foregroundGravity="right" />
-
-            <ImageView
-                android:id="@+id/setBtn"
-                android:layout_width="@dimen/dp21"
-                android:layout_height="@dimen/dp21"
-                android:layout_gravity="center_vertical"
-                android:visibility="gone"
-                android:src="@drawable/check"
-                android:foregroundGravity="right" />
-
-        </FrameLayout>
-
-    </LinearLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp100"
-        android:id="@+id/userPfp"
-        android:layout_margin="@dimen/dp20"
-        android:src="@drawable/profile"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/uName"
-        android:text="@string/username"
-        android:gravity="center"
-        android:textSize="23sp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/uNameEdit"
-        android:text="@string/username"
-        android:gravity="center"
-        android:visibility="gone"
-        android:background="@color/bg_app"
-        android:textSize="20sp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bioDisplay"
-        android:text="@string/defaultBio"
-        android:layout_marginTop="@dimen/dp15"
-        android:gravity="center"
-        android:textColor="@color/subText_dGrey_grey"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bioEdit"
-        android:text="@string/defaultBio"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/dp17"
-        android:gravity="center"
-        android:background="@color/bg_app"
-        android:textColor="@color/subText_grey_dGrey"/>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="@dimen/dp25"
-        android:layout_marginStart="@dimen/dp5"
-        android:layout_marginEnd="@dimen/dp5"
-        android:background="@color/subText_grey_dGrey"/>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp15"
-        android:layout_marginStart="@dimen/dp15"
-        android:layout_marginEnd="@dimen/dp15"
-        app:cardCornerRadius="@dimen/dp10"
-        app:cardBackgroundColor="@color/card_bg"
-        app:cardElevation="@dimen/dp10">
-
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/dp10"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/uEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="youremail@email.com"
-                android:textColor="@color/darker_blue"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp15"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/dp15"
-            android:layout_marginEnd="@dimen/dp15"
-            app:cardCornerRadius="@dimen/dp10"
-            app:cardBackgroundColor="@color/card_bg"
-            app:cardElevation="@dimen/dp10">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/dp10"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Date-Of-Birth"
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="------"
-                    android:id="@+id/dobDisplay"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:textColor="@color/red"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/dobInput"
-                    android:layout_width="@dimen/dp80"
-                    android:layout_gravity="center"
-                    android:layout_height="@dimen/dp30"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:visibility="gone"
-                    android:background="@color/calender_btn"
-                    android:src="@android:drawable/ic_menu_my_calendar" />
-
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp15"
             android:layout_marginStart="@dimen/dp15"
             android:layout_marginEnd="@dimen/dp15"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_weight="1"
             app:cardCornerRadius="@dimen/dp10"
             app:cardBackgroundColor="@color/card_bg"
             app:cardElevation="@dimen/dp10">
@@ -234,146 +148,243 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Gender"
+                    android:text="Email"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/genderDisplay"
+                    android:id="@+id/uEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="youremail@email.com"
+                    android:textColor="@color/darker_blue"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp15"
+                android:layout_marginBottom="@dimen/dp15"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/dp15"
+                android:layout_marginEnd="@dimen/dp15"
+                app:cardCornerRadius="@dimen/dp10"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardElevation="@dimen/dp10">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/dp10"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Date-Of-Birth"
+                        android:gravity="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="------"
+                        android:id="@+id/dobDisplay"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/dobInput"
+                        android:layout_width="@dimen/dp80"
+                        android:layout_gravity="center"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:visibility="gone"
+                        android:background="@color/calender_btn"
+                        android:src="@android:drawable/ic_menu_my_calendar" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp15"
+                android:layout_marginStart="@dimen/dp15"
+                android:layout_marginEnd="@dimen/dp15"
+                android:layout_marginBottom="@dimen/dp15"
+                android:layout_weight="1"
+                app:cardCornerRadius="@dimen/dp10"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardElevation="@dimen/dp10">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/dp10"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Gender"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/genderDisplay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="------"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:gravity="center"
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/genderInput"
+                        android:layout_width="@dimen/dp80"
+                        android:layout_height="@dimen/dp30"
+                        android:spinnerMode="dropdown"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:background="@color/calender_btn"
+                        android:layout_gravity="center"
+                        android:entries="@array/spinner_items_gender"/>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp15"
+            android:layout_marginEnd="@dimen/dp15"
+            app:cardCornerRadius="@dimen/dp10"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardElevation="@dimen/dp10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp10"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/locationDisplay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="------"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:gravity="center"
                     android:textColor="@color/red"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/genderInput"
-                    android:layout_width="@dimen/dp80"
-                    android:layout_height="@dimen/dp30"
-                    android:spinnerMode="dropdown"
-                    android:gravity="center"
+                <EditText
+                    android:id="@+id/locationInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="enter location"
                     android:visibility="gone"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:background="@color/calender_btn"
-                    android:layout_gravity="center"
-                    android:entries="@array/spinner_items_gender"/>
-
+                    android:textColorHint="@color/calender_btn"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
-        android:layout_marginStart="@dimen/dp15"
-        android:layout_marginEnd="@dimen/dp15"
-        app:cardCornerRadius="@dimen/dp10"
-        app:cardBackgroundColor="@color/card_bg"
-        app:cardElevation="@dimen/dp10">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/dp25"
+            android:layout_marginStart="@dimen/dp5"
+            android:layout_marginEnd="@dimen/dp5"
+            android:background="@color/subText_grey_dGrey"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/dp10"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Location"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/locationDisplay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="------"
-                android:textColor="@color/red"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/locationInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="enter location"
-                android:visibility="gone"
-                android:textColorHint="@color/calender_btn"
-                android:textSize="15sp"
-                android:gravity="center"/>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="@dimen/dp25"
-        android:layout_marginStart="@dimen/dp5"
-        android:layout_marginEnd="@dimen/dp5"
-        android:background="@color/subText_grey_dGrey"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp20"
-        android:gravity="center"
-        android:layout_marginStart="@dimen/dp10"
-        android:layout_marginEnd="@dimen/dp10"
-        android:background="@color/card_bg"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="Change Theme"/>
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switchThemes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/logoutSetting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/dp10"
-        android:background="@color/card_bg"
-        android:layout_marginEnd="@dimen/dp10"
-        android:layout_marginStart="@dimen/dp10"
-        android:layout_marginTop="@dimen/dp5"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/red"
-            android:text="Logout"/>
-
-        <ImageView
-            android:layout_width="@dimen/dp20"
-            android:layout_height="@dimen/dp20"
+            android:layout_marginTop="@dimen/dp20"
+            android:gravity="center"
             android:layout_marginStart="@dimen/dp10"
-            android:src="@drawable/logout"/>
+            android:layout_marginEnd="@dimen/dp10"
+            android:background="@color/card_bg"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Change Theme"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchThemes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/logoutSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dp10"
+            android:background="@color/card_bg"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="@color/red"
+                android:text="Logout"/>
+
+            <ImageView
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:layout_marginStart="@dimen/dp10"
+                android:src="@drawable/logout"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
 </ScrollView>
