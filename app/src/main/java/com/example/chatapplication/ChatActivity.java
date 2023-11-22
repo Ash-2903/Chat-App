@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.example.chatapplication.Adapter.ChatAdapter;
@@ -79,6 +81,20 @@ public class ChatActivity extends AppCompatActivity {
         final ChatAdapter chatAdapter = new ChatAdapter(messages,this,recieverId);
         binding.chatRView.setAdapter(chatAdapter);
 
+        ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (chatAdapter.getItemCount() > 0) {
+                    binding.chatRView.scrollToPosition(chatAdapter.getItemCount() - 1);
+                    // Remove the listener to avoid multiple scrolls
+                    binding.chatRView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        };
+
+        binding.chatRView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         binding.chatRView.setLayoutManager(linearLayoutManager);
 
@@ -107,6 +123,7 @@ public class ChatActivity extends AppCompatActivity {
                                             break;
                                         }
                                     }
+
                                 }
 
                                 @Override
@@ -126,55 +143,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
 
-
-//        DatabaseReference senderRoomRef = FirebaseDatabase.getInstance().getReference().child("chats").child(senderRoom);
-//        DatabaseReference receiverRoomRef = FirebaseDatabase.getInstance().getReference().child("chats").child(receiverRoom);
-//
-//        senderRoomRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot senderSnapshot) {
-//                receiverRoomRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot receiverSnapshot) {
-//                        messages.clear();
-//
-//                        for (DataSnapshot senderDataSnapshot : senderSnapshot.getChildren()) {
-//                            Message senderMessage = senderDataSnapshot.getValue(Message.class);
-//                            senderMessage.setMessageId(senderDataSnapshot.getKey());
-//
-//                            for (DataSnapshot receiverDataSnapshot : receiverSnapshot.getChildren()) {
-//                                Message receiverMessage = receiverDataSnapshot.getValue(Message.class);
-//                                senderMessage.setrMessageId(receiverDataSnapshot.getKey());
-//
-//                                // Compare messages based on some criteria (e.g., message content)
-//                                if (senderMessage.getMessage().equals(receiverMessage.getMessage())) {
-//                                    messages.add(senderMessage); // or do something with matched messages
-//                                    break; // If a match is found, break the inner loop
-//                                }
-//                            }
-//                        }
-//                        chatAdapter.notifyDataSetChanged();
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError receiverError) {
-//                        // Handle error in receiver room data retrieval
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError senderError) {
-//                // Handle error in sender room data retrieval
-//            }
-//        });
-
-
-
-
-
-
-
+         
 
         binding.sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +164,18 @@ public class ChatActivity extends AppCompatActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
+                                                    ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+                                                        @Override
+                                                        public void onGlobalLayout() {
+                                                            if (chatAdapter.getItemCount() > 0) {
+                                                                binding.chatRView.scrollToPosition(chatAdapter.getItemCount() - 1);
+                                                                // Remove the listener to avoid multiple scrolls
+                                                                binding.chatRView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                                            }
+                                                        }
+                                                    };
+
+                                                    binding.chatRView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
 
                                                 }
                                             });

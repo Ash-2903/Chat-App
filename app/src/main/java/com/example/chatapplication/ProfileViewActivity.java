@@ -29,7 +29,8 @@ public class ProfileViewActivity extends AppCompatActivity {
 
         String receiverId = getIntent().getStringExtra("rId");
         String userName = getIntent().getStringExtra("uName");
-        Uri pfp = Uri.parse(getIntent().getStringExtra("profilePic"));
+        String pfpString = getIntent().getStringExtra("profilePic");
+
 
         String[] name;
         if(userName!=null) {
@@ -39,11 +40,18 @@ public class ProfileViewActivity extends AppCompatActivity {
         }
 
         binding.uName.setText(userName);
-        Picasso.get().load(pfp).placeholder(R.drawable.profile).into(binding.userPfp);
+        if(pfpString!=null) {
+            Uri pfp = Uri.parse(pfpString);
+            Picasso.get().load(pfp).placeholder(R.drawable.profile).into(binding.userPfp);
+        }
+
 
         database.getReference().child("Users").child(receiverId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String email = snapshot.child("mail").getValue(String.class);
+                if(email!=null)
+                    binding.uEmail.setText(email);
                 String bio = snapshot.child("bio").getValue(String.class);
                 if(bio!=null)
                     binding.bioDisplay.setText(bio);
@@ -70,6 +78,13 @@ public class ProfileViewActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

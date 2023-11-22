@@ -89,10 +89,15 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         database.getReference().child("Users").child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Uri pfpUri = Uri.parse(snapshot.child("profilePic").getValue(String.class));
-                Picasso.get().load(pfpUri).placeholder(R.drawable.profile).into(binding.userPfp);
+                String pfpString = snapshot.child("profilePic").getValue(String.class);
+                if(pfpString!=null) {
+                    Uri pfpUri = Uri.parse(pfpString);
+                    Picasso.get().load(pfpUri).placeholder(R.drawable.profile).into(binding.userPfp);
+                }
                 String bio = snapshot.child("bio").getValue(String.class);
                 binding.uName.setText(snapshot.child("username").getValue(String.class));
+
+                binding.uNameEdit.setText(snapshot.child("username").getValue(String.class));
                 if(bio!=null) {
                     binding.bioDisplay.setText(bio);
                     binding.bioEdit.setText(bio);
@@ -174,6 +179,8 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
                 if(!location.equals("")) {
                     database.getReference().child("Users").child(currentUser.getUid()).child("location").setValue(location);
                 }
+
+                
 
                 // button
                 binding.setBtn.setVisibility(View.GONE);
@@ -271,6 +278,7 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         dobTextView.setText(dob);
         dobTextView.setTextColor(getResources().getColor(R.color.darker_blue));
         FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("dob").setValue(dob);
+          
     }
 
     public static class DatePickerFragment extends DialogFragment

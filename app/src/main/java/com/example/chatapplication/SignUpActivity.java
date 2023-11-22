@@ -25,7 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
     ActivitySignUpBinding binding;
     private FirebaseAuth mAuth;    // authentication (firebase)
     FirebaseDatabase database;
+    DatabaseReference databaseReference;
     private GoogleSignInClient googleClient;
 
     @Override
@@ -51,6 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
         // firebase
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
         // dialog box
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -147,19 +153,38 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()){
 
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Users users = new Users();
-                                    users.setUserId(user.getUid());
-                                    users.setUsername(user.getDisplayName());
-                                    users.setProfilePic(user.getPhotoUrl().toString());
-                                    users.setMail(user.getEmail());
+                                    if(user!=null) {
+                                        database.getReference().child("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if(snapshot.exists()) {
+                                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    Users users = new Users();
+                                                    assert user != null;
+                                                    users.setUserId(user.getUid());
+                                                    users.setUsername(user.getDisplayName());
+                                                    users.setProfilePic(user.getPhotoUrl().toString());
+                                                    users.setMail(user.getEmail());
 
-                                    database.getReference().child("Users").child(user.getUid()).setValue(users);
+                                                    database.getReference().child("Users").child(user.getUid()).setValue(users);
 
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
 
-                                    Toast.makeText(SignUpActivity.this, "Welcome!! "+ user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                                Toast.makeText(SignUpActivity.this, "Welcome!! "+ user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
 
                                 }
                                 else {
