@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Adapter;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.chatapplication.Adapter.ChatAdapter;
@@ -33,7 +36,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
+
 import androidx.activity.OnBackPressedCallback;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -81,22 +88,10 @@ public class ChatActivity extends AppCompatActivity {
         final ChatAdapter chatAdapter = new ChatAdapter(messages,this,recieverId);
         binding.chatRView.setAdapter(chatAdapter);
 
-        ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (chatAdapter.getItemCount() > 0) {
-                    binding.chatRView.scrollToPosition(chatAdapter.getItemCount() - 1);
-                    // Remove the listener to avoid multiple scrolls
-                    binding.chatRView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            }
-        };
-
-        binding.chatRView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
-
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         binding.chatRView.setLayoutManager(linearLayoutManager);
+
+        setScrollViewToBottom(chatAdapter);
 
         String senderRoom = senderId + recieverId;
         String receiverRoom = recieverId + senderId;
@@ -143,7 +138,31 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
 
-         
+        ScrollView scrollView = binding.chatScrollView;
+
+        scrollView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            private boolean hasDrawn = false;
+
+            @Override
+            public boolean onPreDraw() {
+                if (!hasDrawn) {
+                    // Scroll to the bottom after the layout is ready
+                    scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
+                    hasDrawn = true;
+                }
+                return true;
+            }
+        });
+
+        binding.messageInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    setScrollViewToBottom(chatAdapter);
+            }
+        });
+
+
+
 
         binding.sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +170,6 @@ public class ChatActivity extends AppCompatActivity {
                 String msg = binding.messageInput.getText().toString();
                 if(!msg.equals("") && !msg.equals("\n")) {
                     final Message message = new Message(senderId, msg);
-                    //message.setTimeStamp(new Date().getTime());
 
                     message.setTimeStamp(new Date().getTime());
                     binding.messageInput.setText("");
@@ -164,19 +182,7 @@ public class ChatActivity extends AppCompatActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
-                                                    ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-                                                        @Override
-                                                        public void onGlobalLayout() {
-                                                            if (chatAdapter.getItemCount() > 0) {
-                                                                binding.chatRView.scrollToPosition(chatAdapter.getItemCount() - 1);
-                                                                // Remove the listener to avoid multiple scrolls
-                                                                binding.chatRView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                                                            }
-                                                        }
-                                                    };
-
-                                                    binding.chatRView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
-
+                                                    setScrollViewToBottom(chatAdapter);
                                                 }
                                             });
                                 }
@@ -186,8 +192,25 @@ public class ChatActivity extends AppCompatActivity {
 
         });
 
+    }
 
+    private void setScrollViewToBottom(ChatAdapter chatAdapter) {
+        ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (chatAdapter.getItemCount() > 0) {
+                    binding.chatRView.scrollToPosition(chatAdapter.getItemCount() - 1);
+                    // Remove the listener to avoid multiple scrolls
+                    binding.chatRView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        };
 
+        //Objects.requireNonNull(binding.chatRView.getLayoutManager()).smoothScrollToPosition(binding.chatRView,new RecyclerView.State(), Objects.requireNonNull(binding.chatRView.getAdapter()).getItemCount());
+        binding.chatRView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
 
     }
+
+
+
 }

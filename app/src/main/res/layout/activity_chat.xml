@@ -4,17 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ChatActivity"
     android:background="@color/bg_app">
 
-
-    <androidx.recyclerview.widget.RecyclerView
+    <ScrollView
+        android:id="@+id/chatScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dp3"
+        android:layout_above="@+id/linearLayout"
         android:layout_below="@id/toolBar"
-        android:id="@+id/chatRView"
-        android:layout_above="@+id/linearLayout"/>
+        android:fillViewport="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp3"
+            android:id="@+id/chatRView"/>
+
+
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -23,7 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="@dimen/dp5"
         android:layout_marginEnd="@dimen/dp5"
-        android:layout_marginBottom="@dimen/dp15"
+        android:layout_marginBottom="@dimen/dp5"
         android:orientation="horizontal">
 
         <EditText
