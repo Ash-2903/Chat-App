@@ -28,18 +28,19 @@
         android:padding="@dimen/dp7"
         android:layout_marginRight="@dimen/dp10"
         android:layout_marginLeft="@dimen/dp10"
-        android:src="@drawable/ic_delete"/>
+        android:src="@drawable/ic_edit_message"/>
     <View
         android:layout_width="@dimen/dp1"
         android:layout_height="match_parent"
         android:background="@color/bg_app"/>
     <ImageView
+        android:id="@+id/reply"
         android:layout_width="@dimen/dp35"
         android:layout_height="@dimen/dp35"
         android:padding="@dimen/dp7"
         android:layout_marginRight="@dimen/dp10"
         android:layout_marginLeft="@dimen/dp10"
-        android:src="@drawable/ic_delete"/>
+        android:src="@drawable/ic_reply"/>
 
 
 

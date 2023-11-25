@@ -47,12 +47,25 @@
             android:hint="message"
             android:paddingStart="@dimen/dp15"/>
 
-        <ImageView
-            android:id="@+id/sendBtn"
-            android:layout_width="@dimen/dp30"
-            android:layout_height="@dimen/dp30"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_send" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/sendBtn"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:src="@drawable/ic_send" />
+
+            <ImageView
+                android:id="@+id/editMsgBtn"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:visibility="gone"
+                android:src="@drawable/check" />
+
+        </FrameLayout>
 
     </LinearLayout>
 
@@ -92,9 +105,9 @@
 
                 <TextView
                     android:id="@+id/userName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Username"
+                    android:text="@string/username"
                     android:layout_weight="5"
                     android:textColor="@color/white"
                     android:layout_gravity="center_vertical"

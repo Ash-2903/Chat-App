@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapplication.ChatActivity;
 import com.example.chatapplication.R;
+import com.example.chatapplication.databinding.ActivityChatBinding;
 import com.example.chatapplication.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -58,6 +60,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     Context context;
     String recId;
     int SENDER_VIEW_TYPE = 1, RECEIVER_VIEW_TYPE = 2;
+
 
     public ChatAdapter(ArrayList<Message> messageModel, Context context) {
         this.messageModel = messageModel;
@@ -159,6 +162,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
 
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            String senderRoom = FirebaseAuth.getInstance().getUid() + recId;
+            String receiverRoom = recId + FirebaseAuth.getInstance().getUid();
+            String msgId = message.getrMessageId();
+
             ImageView delete = popUpView.findViewById(R.id.deleteChat);
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,10 +176,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                    String senderRoom = FirebaseAuth.getInstance().getUid() + recId;
-                                    String receiverRoom = recId + FirebaseAuth.getInstance().getUid();
-                                    String msgId = message.getrMessageId();
+
                                     Log.d("tiger", "onClick: " + msgId);
                                     database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).removeValue();
                                     database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).removeValue();
@@ -188,8 +193,39 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
 
+
+            ImageView editMessage = popUpView.findViewById(R.id.edit);
+
+            ImageView editMessageBtn = holder.itemView.findViewById(R.id.editMsgBtn);
+            ImageView sendBtn = holder.itemView.findViewById(R.id.sendBtn);
+            EditText inputMessage = holder.itemView.findViewById(R.id.messageInput);
+            editMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendBtn.setVisibility(View.GONE);
+                    editMessageBtn.setVisibility(View.VISIBLE);
+                    Log.d("clicked", "onClick: edit clicked");
+                    Log.d("working", "onClick: " + inputMessage.getContext() + " " + sendBtn.getId() + " " + editMessageBtn.getClass().getName());
+                    inputMessage.setText(message.getMessage());
+                }
+
+            });
+
+            editMessageBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String editedMsg = inputMessage.getText().toString();
+                    database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).setValue(editedMsg);
+                    database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).setValue(editedMsg);
+                    editMessageBtn.setVisibility(View.GONE);
+                    sendBtn.setVisibility(View.VISIBLE);
+                }
+            });
+
         }
     }
+
 
 
     @Override
@@ -216,5 +252,27 @@ public class ChatAdapter extends RecyclerView.Adapter {
             sTime = itemView.findViewById(R.id.senderTime);
         }
     }
+
+//    public static class MyViewHolder extends RecyclerView.ViewHolder {
+//        ActivityChatBinding binding; // Your binding instance
+//
+//        public MyViewHolder(@NonNull View itemView) {
+//            super(itemView);
+//        }
+//
+//        public MyViewHolder(ActivityChatBinding binding) {
+//            super(binding.getRoot());
+//            this.binding = binding;
+//        }
+//
+//        public ActivityChatBinding getBinding() {
+//            return binding;
+//        }
+//
+//        public void setBinding(ActivityChatBinding binding) {
+//            this.binding = binding;
+//        }
+//
+//    }
 
 }
