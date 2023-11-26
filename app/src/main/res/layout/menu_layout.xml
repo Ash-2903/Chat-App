@@ -28,7 +28,9 @@
         android:padding="@dimen/dp7"
         android:layout_marginRight="@dimen/dp10"
         android:layout_marginLeft="@dimen/dp10"
-        android:src="@drawable/ic_edit_message"/>
+        android:clickable="true"
+        android:src="@drawable/ic_edit_message"
+        android:focusable="true" />
     <View
         android:layout_width="@dimen/dp1"
         android:layout_height="match_parent"

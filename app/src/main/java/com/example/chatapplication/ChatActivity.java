@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.chatapplication.Adapter.ChatAdapter;
 import com.example.chatapplication.Adapter.UsersAdapter;
 import com.example.chatapplication.databinding.ActivityChatBinding;
+import com.example.chatapplication.databinding.MenuLayoutBinding;
 import com.example.chatapplication.models.Message;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,20 +45,23 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditButtonClickListener {
 
     ActivityChatBinding binding;
+    MenuLayoutBinding popUpBinding;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+
+    Message longClickedMessage;
+    String senderRoom , receiverRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
+        //popUpBinding = MenuLayoutBinding.inflate(getLayoutInflater());
+        //popUpBinding = MenuLayoutBinding.bind(getLayoutInflater().inflate(R.layout.menu_layout, null));
         setContentView(binding.getRoot());
-
-//        ChatAdapter.MyViewHolder viewHolder = new ChatAdapter.MyViewHolder(binding);
-//        viewHolder.setBinding(binding);
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -90,6 +94,7 @@ public class ChatActivity extends AppCompatActivity {
 
         final ArrayList<Message> messages = new ArrayList<>();
         final ChatAdapter chatAdapter = new ChatAdapter(messages,this,recieverId);
+        chatAdapter.setEditButtonClickListener(this);
         binding.chatRView.setAdapter(chatAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -97,8 +102,8 @@ public class ChatActivity extends AppCompatActivity {
 
         setScrollViewToBottom(chatAdapter);
 
-        String senderRoom = senderId + recieverId;
-        String receiverRoom = recieverId + senderId;
+        senderRoom = senderId + recieverId;
+        receiverRoom = recieverId + senderId;
 
         database.getReference().child("chats").child(senderRoom)
                 .addValueEventListener(new ValueEventListener() {
@@ -158,17 +163,25 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        //View popUpView = getLayoutInflater().inflate(R.layout.menu_layout, null);
+        //ImageView editBtn = popUpBinding.edit;
+//        Log.d("activityContext", "onCreate: " + this);
+//        Log.d("contextOfMsg", "onCreate: " + editBtn.getContext());
+//        Log.d("applicationContext", "onCreate: " + getApplicationContext());
+
+//        editBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d("working", "onClick: edit btn clicked");
+//            }
+//        });
+
         binding.messageInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     setScrollViewToBottom(chatAdapter);
             }
         });
-
-        //ImageView edit = findViewById(R.id.edit);
-
-
-
 
         binding.sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +211,10 @@ public class ChatActivity extends AppCompatActivity {
 
         });
 
+        Log.d("YourTag", "Before setting onClickListener");
+
+
+
     }
 
     private void setScrollViewToBottom(ChatAdapter chatAdapter) {
@@ -218,5 +235,34 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onEditButtonClick() {
+        //binding = ActivityChatBinding.inflate(getLayoutInflater());
+        longClickedMessage = ChatAdapter.getMessageObject();
+        ImageView editMsgBtn = binding.editMsgBtn;
+        binding.sendBtn.setVisibility(View.GONE);
+        editMsgBtn.setVisibility(View.VISIBLE);
 
+        if(longClickedMessage!=null) {
+            binding.messageInput.setText(longClickedMessage.getMessage());
+            binding.editMsgBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String editedMsg = binding.messageInput.getText().toString();
+                    binding.editMsgBtn.setVisibility(View.GONE);
+                    binding.sendBtn.setVisibility(View.VISIBLE);
+                    Log.d("YourTag", "onClick: 1)" + longClickedMessage.getMessageId() + " 2) " + longClickedMessage.getrMessageId());
+                    database.getReference().child("chats").child(senderRoom).child(longClickedMessage.getMessageId()).child("message").setValue(editedMsg)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            database.getReference().child("chats").child(receiverRoom).child(longClickedMessage.getrMessageId()).child("message").setValue(editedMsg);
+                                        }
+                                    });
+                    binding.messageInput.setText("");
+                }
+            });
+        }
+
+    }
 }

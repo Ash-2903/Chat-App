@@ -1,29 +1,15 @@
 package com.example.chatapplication.Adapter;
 
-import static android.app.PendingIntent.getActivity;
-import static android.app.PendingIntent.getService;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.metrics.Event;
 import android.os.Build;
-import android.os.Handler;
 import android.os.Vibrator;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -31,28 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatapplication.ChatActivity;
 import com.example.chatapplication.R;
-import com.example.chatapplication.databinding.ActivityChatBinding;
 import com.example.chatapplication.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
@@ -60,6 +34,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     Context context;
     String recId;
     int SENDER_VIEW_TYPE = 1, RECEIVER_VIEW_TYPE = 2;
+
+    static Message longClickedMessage;
 
 
     public ChatAdapter(ArrayList<Message> messageModel, Context context) {
@@ -132,6 +108,21 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 @Override
                 public boolean onLongClick(View v) {
 
+                    setMessageObject(message);
+
+                    // Inside the long click listener of the holder.itemView in ChatAdapter
+                    ImageView editBtn = popUpView.findViewById(R.id.edit);
+
+                    editBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Notify the listener about the edit button click event
+                            if (editButtonClickListener != null) {
+                                editButtonClickListener.onEditButtonClick();
+                            }
+                        }
+                    });
+
                     // vibrate for 100 milliseconds
                     vibrate.vibrate(50);
 
@@ -194,34 +185,33 @@ public class ChatAdapter extends RecyclerView.Adapter {
             });
 
 
-            ImageView editMessage = popUpView.findViewById(R.id.edit);
+//            ImageView editMessage = popUpView.findViewById(R.id.edit);
+//
+//            ActivityChatBinding binding = ActivityChatBinding.inflate((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+//
+//            ImageView editMessageBtn = binding.editMsgBtn;
+//            ImageView sendBtn = binding.sendBtn;
+//            EditText inputMessage = binding.messageInput;
+//            editMessage.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d("working", "onClick: " + inputMessage.getContext() + " " + sendBtn.getId() + " " + editMessageBtn.getClass().getName());
+//                    //inputMessage.setText(message.getMessage());
+//                }
+//
+//            });
 
-            ImageView editMessageBtn = holder.itemView.findViewById(R.id.editMsgBtn);
-            ImageView sendBtn = holder.itemView.findViewById(R.id.sendBtn);
-            EditText inputMessage = holder.itemView.findViewById(R.id.messageInput);
-            editMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sendBtn.setVisibility(View.GONE);
-                    editMessageBtn.setVisibility(View.VISIBLE);
-                    Log.d("clicked", "onClick: edit clicked");
-                    Log.d("working", "onClick: " + inputMessage.getContext() + " " + sendBtn.getId() + " " + editMessageBtn.getClass().getName());
-                    inputMessage.setText(message.getMessage());
-                }
-
-            });
-
-            editMessageBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    String editedMsg = inputMessage.getText().toString();
-                    database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).setValue(editedMsg);
-                    database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).setValue(editedMsg);
-                    editMessageBtn.setVisibility(View.GONE);
-                    sendBtn.setVisibility(View.VISIBLE);
-                }
-            });
+//            editMessageBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    String editedMsg = inputMessage.getText().toString();
+//                    database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).setValue(editedMsg);
+//                    database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).setValue(editedMsg);
+//                    editMessageBtn.setVisibility(View.GONE);
+//                    sendBtn.setVisibility(View.VISIBLE);
+//                }
+//            });
 
         }
     }
@@ -231,6 +221,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return messageModel.size();
+    }
+
+    public void setMessageObject(Message longClickedMessage) {
+        ChatAdapter.longClickedMessage = longClickedMessage;
+    }
+
+    public static Message getMessageObject() {
+        return longClickedMessage;
     }
 
 
@@ -252,6 +250,24 @@ public class ChatAdapter extends RecyclerView.Adapter {
             sTime = itemView.findViewById(R.id.senderTime);
         }
     }
+
+    // Define an interface to handle the click event
+    public interface EditButtonClickListener {
+        void onEditButtonClick();
+    }
+
+    // Add a member variable to hold the listener
+    private EditButtonClickListener editButtonClickListener;
+
+    // Method to set the listener
+    public void setEditButtonClickListener(EditButtonClickListener listener) {
+        this.editButtonClickListener = listener;
+    }
+
+
+
+
+
 
 //    public static class MyViewHolder extends RecyclerView.ViewHolder {
 //        ActivityChatBinding binding; // Your binding instance
