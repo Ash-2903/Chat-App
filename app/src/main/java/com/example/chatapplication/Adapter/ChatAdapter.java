@@ -184,35 +184,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
 
-
-//            ImageView editMessage = popUpView.findViewById(R.id.edit);
-//
-//            ActivityChatBinding binding = ActivityChatBinding.inflate((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-//
-//            ImageView editMessageBtn = binding.editMsgBtn;
-//            ImageView sendBtn = binding.sendBtn;
-//            EditText inputMessage = binding.messageInput;
-//            editMessage.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.d("working", "onClick: " + inputMessage.getContext() + " " + sendBtn.getId() + " " + editMessageBtn.getClass().getName());
-//                    //inputMessage.setText(message.getMessage());
-//                }
-//
-//            });
-
-//            editMessageBtn.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    String editedMsg = inputMessage.getText().toString();
-//                    database.getReference().child("chats").child(senderRoom).child(message.getMessageId()).setValue(editedMsg);
-//                    database.getReference().child("chats").child(receiverRoom).child(message.getrMessageId()).setValue(editedMsg);
-//                    editMessageBtn.setVisibility(View.GONE);
-//                    sendBtn.setVisibility(View.VISIBLE);
-//                }
-//            });
-
         }
     }
 
@@ -263,32 +234,5 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public void setEditButtonClickListener(EditButtonClickListener listener) {
         this.editButtonClickListener = listener;
     }
-
-
-
-
-
-
-//    public static class MyViewHolder extends RecyclerView.ViewHolder {
-//        ActivityChatBinding binding; // Your binding instance
-//
-//        public MyViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//        }
-//
-//        public MyViewHolder(ActivityChatBinding binding) {
-//            super(binding.getRoot());
-//            this.binding = binding;
-//        }
-//
-//        public ActivityChatBinding getBinding() {
-//            return binding;
-//        }
-//
-//        public void setBinding(ActivityChatBinding binding) {
-//            this.binding = binding;
-//        }
-//
-//    }
 
 }

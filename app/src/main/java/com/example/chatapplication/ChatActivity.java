@@ -121,9 +121,10 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                                 public void onDataChange(@NonNull DataSnapshot snapshotR) {
                                     int k=0;
                                     for(DataSnapshot ds : snapshotR.getChildren() ) {
-                                        model.setrMessageId(ds.getKey());
+
                                         k++;
-                                        if(finalFlag ==k) {
+                                        if(finalFlag == k) {
+                                            model.setrMessageId(ds.getKey());
                                             break;
                                         }
                                     }
@@ -237,7 +238,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
 
     @Override
     public void onEditButtonClick() {
-        //binding = ActivityChatBinding.inflate(getLayoutInflater());
+
         longClickedMessage = ChatAdapter.getMessageObject();
         ImageView editMsgBtn = binding.editMsgBtn;
         binding.sendBtn.setVisibility(View.GONE);
@@ -248,17 +249,12 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
             binding.editMsgBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String editedMsg = binding.messageInput.getText().toString();
+                    String editedMsgString = binding.messageInput.getText().toString();
                     binding.editMsgBtn.setVisibility(View.GONE);
                     binding.sendBtn.setVisibility(View.VISIBLE);
-                    Log.d("YourTag", "onClick: 1)" + longClickedMessage.getMessageId() + " 2) " + longClickedMessage.getrMessageId());
-                    database.getReference().child("chats").child(senderRoom).child(longClickedMessage.getMessageId()).child("message").setValue(editedMsg)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            database.getReference().child("chats").child(receiverRoom).child(longClickedMessage.getrMessageId()).child("message").setValue(editedMsg);
-                                        }
-                                    });
+                    Log.d("YourTag", "onClick: 1) " + longClickedMessage.getMessageId() + " 2) " + longClickedMessage.getrMessageId());
+                    database.getReference().child("chats").child(receiverRoom).child(longClickedMessage.getrMessageId()).child("message").setValue(editedMsgString);
+                    database.getReference().child("chats").child(senderRoom).child(longClickedMessage.getMessageId()).child("message").setValue(editedMsgString);
                     binding.messageInput.setText("");
                 }
             });
