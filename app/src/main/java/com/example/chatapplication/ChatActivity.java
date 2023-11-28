@@ -113,22 +113,16 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                         int flag = 0;
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Message model = dataSnapshot.getValue(Message.class);
+                            assert model != null;
                             model.setMessageId(dataSnapshot.getKey());
+                            model.setrMessageId(dataSnapshot.child("rMessageId").getValue(String.class));
                             flag++;
                             int finalFlag = flag;
                             database.getReference().child("chats").child(receiverRoom).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshotR) {
-                                    int k=0;
-                                    for(DataSnapshot ds : snapshotR.getChildren() ) {
-
-                                        k++;
-                                        if(finalFlag == k) {
-                                            model.setrMessageId(ds.getKey());
-                                            break;
-                                        }
-                                    }
-
+                                    // "model.getrMessageId()" is null when the contents of receiver room are changed by the receiver
+                                    Log.d("YourTag", "onDataChange: " + model.getrMessageId());
                                 }
 
                                 @Override
@@ -164,19 +158,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
             }
         });
 
-        //View popUpView = getLayoutInflater().inflate(R.layout.menu_layout, null);
-        //ImageView editBtn = popUpBinding.edit;
-//        Log.d("activityContext", "onCreate: " + this);
-//        Log.d("contextOfMsg", "onCreate: " + editBtn.getContext());
-//        Log.d("applicationContext", "onCreate: " + getApplicationContext());
-
-//        editBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("working", "onClick: edit btn clicked");
-//            }
-//        });
-
         binding.messageInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,12 +174,16 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
 
                     message.setTimeStamp(new Date().getTime());
                     binding.messageInput.setText("");
+                    String rId = database.getReference().child("chats").child(receiverRoom).push().getKey();
+                    message.setrMessageId(rId);
 
                     database.getReference().child("chats").child(senderRoom).push().setValue(message)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    database.getReference().child("chats").child(receiverRoom).push().setValue(message)
+                                    message.setrMessageId(null);
+                                    assert rId != null;
+                                    database.getReference().child("chats").child(receiverRoom).child(rId).setValue(message)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
