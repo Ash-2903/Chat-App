@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chatapplication.AddFriendsActivity;
 import com.example.chatapplication.ChatActivity;
 import com.example.chatapplication.R;
 import com.example.chatapplication.models.Message;
@@ -48,15 +49,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         Users users = list.get(position);
         Picasso.get().load(users.getProfilePic()).placeholder(R.drawable.profile).into(holder.profilePic);
         holder.uName.setText(users.getUsername());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("userID",users.getUserId());
-                intent.putExtra("username",users.getUsername());
-                intent.putExtra("pfp",users.getProfilePic());
-                context.startActivity(intent);
-            }
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra("userID",users.getUserId());
+            intent.putExtra("username",users.getUsername());
+            intent.putExtra("pfp",users.getProfilePic());
+            context.startActivity(intent);
         });
 
         setLastMessage(holder,position);
@@ -102,6 +101,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         });
 
     }
+
+
 
 
     @Override

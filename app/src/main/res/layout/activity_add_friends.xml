@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_app"
+    tools:context=".MainActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="6"
+        style="@style/app_bar">
+
+        <TextView
+            android:id="@+id/main_navbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/app"
+            style="@style/app_bar"
+            android:layout_weight="5.5"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:elevation="@dimen/dp15"
+        android:background="@color/app_bar_color"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="@dimen/dp250"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_background"
+            android:padding="@dimen/dp2"
+            android:backgroundTint="@color/search_bar_color"
+            android:textColor="@color/darker_blue"
+            android:gravity="center"
+            android:layout_margin="@dimen/dp10"/>
+
+        <ImageView
+            android:layout_width="@dimen/dp23"
+            android:layout_height="@dimen/dp23"
+            android:src="@drawable/ic_search"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:id="@+id/usersList"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/usersList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

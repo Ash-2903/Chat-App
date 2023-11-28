@@ -64,4 +64,8 @@
     <!--    calender button color-->
     <color name="calender_btn">@color/bg_grey_dark</color>
 
+    <!--    app bar color-->
+    <color name="app_bar_color">@color/dark_grey</color>
+    <color name="search_bar_color">@color/grey</color>
+
 </resources>

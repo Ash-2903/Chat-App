@@ -16,6 +16,9 @@
         android:theme="@style/Theme.ChatApplicationChatterly"
         tools:targetApi="31">
         <activity
+            android:name=".AddFriendsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileViewActivity"
             android:exported="false" />
         <activity
@@ -23,8 +26,8 @@
             android:exported="false" />
         <activity
             android:name=".ChatActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SignInActivity"
             android:exported="true">

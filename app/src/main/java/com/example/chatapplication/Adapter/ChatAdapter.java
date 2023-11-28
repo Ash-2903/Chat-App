@@ -118,6 +118,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         public void onClick(View v) {
                             // Notify the listener about the edit button click event
                             if (editButtonClickListener != null) {
+                                v.setBackgroundResource(R.color.longPress);
                                 editButtonClickListener.onEditButtonClick();
                             }
                         }

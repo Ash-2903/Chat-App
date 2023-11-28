@@ -68,4 +68,9 @@
 
 <!--    calender button color-->
     <color name="calender_btn">@color/light_blue</color>
+
+<!--    app bar color-->
+    <color name="app_bar_color">@color/light_blue</color>
+    <color name="search_bar_color">@color/lighter_blue</color>
+
 </resources>

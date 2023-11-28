@@ -1,36 +1,25 @@
 package com.example.chatapplication;
 
-import static java.text.DateFormat.getTimeInstance;
-
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.example.chatapplication.Adapter.ChatAdapter;
-import com.example.chatapplication.Adapter.UsersAdapter;
 import com.example.chatapplication.databinding.ActivityChatBinding;
 import com.example.chatapplication.databinding.MenuLayoutBinding;
 import com.example.chatapplication.models.Message;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -38,11 +27,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.recyclerview.widget.LinearSmoothScroller;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditButtonClickListener {
@@ -59,8 +43,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
-        //popUpBinding = MenuLayoutBinding.inflate(getLayoutInflater());
-        //popUpBinding = MenuLayoutBinding.bind(getLayoutInflater().inflate(R.layout.menu_layout, null));
         setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
@@ -237,6 +219,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                     String editedMsgString = binding.messageInput.getText().toString();
                     binding.editMsgBtn.setVisibility(View.GONE);
                     binding.sendBtn.setVisibility(View.VISIBLE);
+                    v.setBackgroundResource(R.color.bg_app);
                     Log.d("YourTag", "onClick: 1) " + longClickedMessage.getMessageId() + " 2) " + longClickedMessage.getrMessageId());
                     database.getReference().child("chats").child(receiverRoom).child(longClickedMessage.getrMessageId()).child("message").setValue(editedMsgString);
                     database.getReference().child("chats").child(senderRoom).child(longClickedMessage.getMessageId()).child("message").setValue(editedMsgString);

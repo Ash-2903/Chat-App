@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChatsFragment extends Fragment {
 
     FragmentChatsBinding binding;
     ArrayList<Users> list = new ArrayList<>();
+    FirebaseAuth mAuth;
     FirebaseDatabase database;
 
     public ChatsFragment() {
@@ -41,27 +44,76 @@ public class ChatsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         binding = FragmentChatsBinding.inflate(inflater,container,false);
+        mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
-        UsersAdapter adapter = new UsersAdapter(list,getContext());
-        binding.chatRecyclerView.setAdapter(adapter);
+        getFriends(new FriendsCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onFriendsReceived(ArrayList<Users> friends) {
+                Log.d("Friends", "Received friends: " + friends.size());
+                UsersAdapter adapter = new UsersAdapter(friends,getContext());
+                binding.chatRecyclerView.setAdapter(adapter);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                binding.chatRecyclerView.setLayoutManager(layoutManager);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        binding.chatRecyclerView.setLayoutManager(layoutManager);
+        return binding.getRoot();
+    }
 
-        database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged") // warning handler
+
+
+    public interface FriendsCallback {
+        void onFriendsReceived(ArrayList<Users> friends);
+    }
+
+    public void getFriends( FriendsCallback callback ) {
+        ArrayList<Users> friends = new ArrayList<>();
+
+        String currentUid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        database.getReference().child("chats").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
+                friends.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Users users = dataSnapshot.getValue(Users.class);
-                    assert users != null; // to solve null pointer exception warning
-                    users.setUserId(dataSnapshot.getKey());
-                    if(!users.getUserId().equals(FirebaseAuth.getInstance().getUid()))
-                        list.add(users);
+                    String room = dataSnapshot.getKey();
+                    if(room!=null) {
+                        String firstPerson = room.substring(0,(room.length()/2));
+
+                        if(firstPerson.equals(currentUid)) {
+                            String friend = room.substring(room.length()/2);
+                            //Log.d("friends", "friend : " + friend);
+
+                            database.getReference().child("Users").child(friend).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    Users friendModel = new Users();
+                                    friendModel.setUsername(snapshot.child("username").getValue(String.class));
+                                    friendModel.setUserId(snapshot.child("userId").getValue(String.class));
+                                    if(snapshot.child("profilePic").getValue(String.class)!=null) {
+                                        friendModel.setProfilePic(snapshot.child("profilePic").getValue(String.class));
+                                    }
+                                    //Log.d("friends", "onDataChange: " + friendModel );
+                                    friends.add(friendModel);
+                                    callback.onFriendsReceived(friends);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    //Log.d("friends", "onCancelled: ");
+                                }
+                            });
+
+                            //Log.d("friends", "getFriends list : " + friends);
+
+                        }
+                    }
+
                 }
-                adapter.notifyDataSetChanged();
+
+                //Log.d("friends", "getFriends list : " + friends);
             }
 
             @Override
@@ -70,8 +122,11 @@ public class ChatsFragment extends Fragment {
             }
         });
 
-        return binding.getRoot();
+
+
     }
+
+
 
 
 }

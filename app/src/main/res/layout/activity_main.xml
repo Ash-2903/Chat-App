@@ -8,6 +8,8 @@
     android:background="@color/bg_app"
     tools:context=".MainActivity">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +18,7 @@
 
         <TextView
             android:id="@+id/main_navbar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/app"
             style="@style/app_bar"
@@ -29,7 +31,8 @@
             android:layout_height="@dimen/dp21"
             android:layout_gravity="center_vertical"
             android:foregroundGravity="right"
-            android:background="@drawable/ic_menu" />
+            android:background="@drawable/ic_menu"
+            android:contentDescription="@string/menu_button" />
 
     </LinearLayout>
 
@@ -47,12 +50,30 @@
         app:tabSelectedTextColor="@color/tabText_blue_lBlue"
         app:tabTextColor="@color/tabText_white_grey" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/dp25"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/light_blue"
+            app:elevation="@dimen/dp15" />
+
+    </FrameLayout>
 
 
 </LinearLayout>
