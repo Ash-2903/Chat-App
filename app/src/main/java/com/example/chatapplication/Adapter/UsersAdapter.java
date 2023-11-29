@@ -2,6 +2,7 @@ package com.example.chatapplication.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatapplication.AddFriendsActivity;
 import com.example.chatapplication.ChatActivity;
 import com.example.chatapplication.R;
 import com.example.chatapplication.models.Message;
@@ -55,6 +55,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             intent.putExtra("userID",users.getUserId());
             intent.putExtra("username",users.getUsername());
             intent.putExtra("pfp",users.getProfilePic());
+            Log.d("bruno", "onBindViewHolder: " + users);
             context.startActivity(intent);
         });
 

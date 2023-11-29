@@ -90,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     Users user = new Users(uName, email, pwd);
                                     String id = task.getResult().getUser().getUid();
                                     database.getReference().child("Users").child(id).setValue(user);
+                                    database.getReference().child("Users").child(id).child("userId").setValue(id);
                                     Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
                                     // move to main activity
                                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);

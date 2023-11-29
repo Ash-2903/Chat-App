@@ -28,7 +28,7 @@ import java.util.Objects;
 public class ChatsFragment extends Fragment {
 
     FragmentChatsBinding binding;
-    ArrayList<Users> list = new ArrayList<>();
+    //ArrayList<Users> list = new ArrayList<>();
     FirebaseAuth mAuth;
     FirebaseDatabase database;
 
@@ -53,10 +53,11 @@ public class ChatsFragment extends Fragment {
             public void onFriendsReceived(ArrayList<Users> friends) {
                 Log.d("Friends", "Received friends: " + friends.size());
                 UsersAdapter adapter = new UsersAdapter(friends,getContext());
+//                for(int i=0;i< friends.size();i++)
+//                    Log.d("bruno", "onFriendsReceived: " + friends.get(i).getUserId());
                 binding.chatRecyclerView.setAdapter(adapter);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
                 binding.chatRecyclerView.setLayoutManager(layoutManager);
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -69,11 +70,12 @@ public class ChatsFragment extends Fragment {
         void onFriendsReceived(ArrayList<Users> friends);
     }
 
-    public void getFriends( FriendsCallback callback ) {
+    public void getFriends( FriendsCallback callback) {
         ArrayList<Users> friends = new ArrayList<>();
 
         String currentUid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         database.getReference().child("chats").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 friends.clear();
@@ -91,7 +93,9 @@ public class ChatsFragment extends Fragment {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     Users friendModel = new Users();
                                     friendModel.setUsername(snapshot.child("username").getValue(String.class));
+                                    //friendModel.setUserId(snapshot.getKey());
                                     friendModel.setUserId(snapshot.child("userId").getValue(String.class));
+                                    //Log.d("bruno", "onDataChange: " + snapshot.child("userId").getValue(String.class));
                                     if(snapshot.child("profilePic").getValue(String.class)!=null) {
                                         friendModel.setProfilePic(snapshot.child("profilePic").getValue(String.class));
                                     }
@@ -105,15 +109,10 @@ public class ChatsFragment extends Fragment {
                                     //Log.d("friends", "onCancelled: ");
                                 }
                             });
-
-                            //Log.d("friends", "getFriends list : " + friends);
-
                         }
                     }
 
                 }
-
-                //Log.d("friends", "getFriends list : " + friends);
             }
 
             @Override

@@ -50,6 +50,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
 
         final String senderId = mAuth.getUid();
         String recieverId = getIntent().getStringExtra("userID");
+        Log.d("adapterMessage", "onCreate: "+ recieverId);
         String userName = getIntent().getStringExtra("username");
         String pfp = getIntent().getStringExtra("pfp");
 
@@ -73,6 +74,8 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                 startActivity(intent);
             }
         });
+
+        Log.d("insideChat", "onCreate: inside chat activity of " + recieverId + " - " + userName);
 
         final ArrayList<Message> messages = new ArrayList<>();
         final ChatAdapter chatAdapter = new ChatAdapter(messages,this,recieverId);

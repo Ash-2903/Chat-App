@@ -40,8 +40,6 @@ public class AddFriendsActivity extends AppCompatActivity {
 
         //binding.usersList.setAdapter(new FragmentsAdapter(getSupportFragmentManager()));
 
-
-
         UsersAdapter adapter = new UsersAdapter(list,this);
         binding.usersList.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
