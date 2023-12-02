@@ -2,7 +2,7 @@ package com.example.chatapplication.models;
 
 public class Users {
 
-    String profilePic, username, mail, password, userId, lastMessage, bio, dob, location, gender;
+    String profilePic, username, mail, password, userId, lastMessage, bio, dob, location, gender, fcmToken;
 
     public Users() {
 
@@ -105,5 +105,13 @@ public class Users {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

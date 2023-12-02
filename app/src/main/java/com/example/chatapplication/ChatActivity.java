@@ -2,9 +2,21 @@ package com.example.chatapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +28,7 @@ import com.example.chatapplication.Adapter.ChatAdapter;
 import com.example.chatapplication.databinding.ActivityChatBinding;
 import com.example.chatapplication.databinding.MenuLayoutBinding;
 import com.example.chatapplication.models.Message;
+import com.example.chatapplication.models.Users;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,19 +38,31 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditButtonClickListener {
 
     ActivityChatBinding binding;
-    MenuLayoutBinding popUpBinding;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
 
     Message longClickedMessage;
-    String senderRoom , receiverRoom;
+    String senderRoom, receiverRoom;
+    Users receiverUser, senderUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +75,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
 
         final String senderId = mAuth.getUid();
         String recieverId = getIntent().getStringExtra("userID");
-        Log.d("adapterMessage", "onCreate: "+ recieverId);
+        Log.d("adapterMessage", "onCreate: " + recieverId);
         String userName = getIntent().getStringExtra("username");
         String pfp = getIntent().getStringExtra("pfp");
 
@@ -68,17 +93,46 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChatActivity.this, ProfileViewActivity.class);
-                intent.putExtra("uName",userName);
-                intent.putExtra("profilePic",pfp);
-                intent.putExtra("rId",recieverId);
+                intent.putExtra("uName", userName);
+                intent.putExtra("profilePic", pfp);
+                intent.putExtra("rId", recieverId);
                 startActivity(intent);
             }
         });
 
-        Log.d("insideChat", "onCreate: inside chat activity of " + recieverId + " - " + userName);
+        assert recieverId != null;
+
+        // To get Receiver User
+        database.getReference().child("Users").child(recieverId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                receiverUser = snapshot.getValue(Users.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        assert senderId != null;
+        // To get Sender User
+        database.getReference().child("Users").child(senderId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                senderUser = snapshot.getValue(Users.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         final ArrayList<Message> messages = new ArrayList<>();
-        final ChatAdapter chatAdapter = new ChatAdapter(messages,this,recieverId);
+        final ChatAdapter chatAdapter = new ChatAdapter(messages, this, recieverId);
         chatAdapter.setEditButtonClickListener(this);
         binding.chatRView.setAdapter(chatAdapter);
 
@@ -95,18 +149,14 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         messages.clear();
-                        int flag = 0;
-                        for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Message model = dataSnapshot.getValue(Message.class);
                             assert model != null;
                             model.setMessageId(dataSnapshot.getKey());
                             model.setrMessageId(dataSnapshot.child("rMessageId").getValue(String.class));
-                            flag++;
-                            int finalFlag = flag;
                             database.getReference().child("chats").child(receiverRoom).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshotR) {
-                                    // "model.getrMessageId()" is null when the contents of receiver room are changed by the receiver
                                     Log.d("YourTag", "onDataChange: " + model.getrMessageId());
                                 }
 
@@ -143,18 +193,13 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
             }
         });
 
-        binding.messageInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    setScrollViewToBottom(chatAdapter);
-            }
-        });
+        binding.messageInput.setOnClickListener(v -> setScrollViewToBottom(chatAdapter));
 
         binding.sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = binding.messageInput.getText().toString();
-                if(!msg.equals("") && !msg.equals("\n")) {
+                if (!msg.equals("") && !msg.equals("\n")) {
                     final Message message = new Message(senderId, msg);
 
                     message.setTimeStamp(new Date().getTime());
@@ -172,20 +217,15 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
+                                                    sendNotification(msg);
                                                     setScrollViewToBottom(chatAdapter);
                                                 }
                                             });
                                 }
                             });
-                    }
                 }
-
+            }
         });
-
-        Log.d("YourTag", "Before setting onClickListener");
-
-
-
     }
 
     private void setScrollViewToBottom(ChatAdapter chatAdapter) {
@@ -199,9 +239,54 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                 }
             }
         };
-
-        //Objects.requireNonNull(binding.chatRView.getLayoutManager()).smoothScrollToPosition(binding.chatRView,new RecyclerView.State(), Objects.requireNonNull(binding.chatRView.getAdapter()).getItemCount());
         binding.chatRView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
+
+
+    void sendNotification(String message) {
+
+        String rToken = receiverUser.getFcmToken();
+        try {
+            JSONObject jsonObject = new JSONObject();
+            JSONObject notificationObject = new JSONObject();
+            notificationObject.put("title", senderUser.getUsername());
+            notificationObject.put("body", message);
+            JSONObject dataObj = new JSONObject();
+            dataObj.put("userId", mAuth.getUid());
+            jsonObject.put("notification", notificationObject)
+                    .put("data", dataObj)
+                    .put("to", rToken);
+            callApi(jsonObject);
+            Log.d("myTag", "sendNotification: rToken : " + rToken + " user : " + senderUser.getUsername());
+
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    void callApi(JSONObject jsonObject) {
+
+        MediaType JSON = MediaType.get("application/json");
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://fcm.googleapis.com/fcm/send";
+        RequestBody body = RequestBody.create(jsonObject.toString(),JSON);
+        okhttp3.Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .header("Authorization","Bearer AAAAfTQTbug:APA91bFQEvxewr96cAMwNmy9X9useLsZZWZ7hJjMBlMMCHXHng3hFZrbeGVTc1l3AFPZvHyhjT7s4do53NeOcU437QzylhteJ9148QIK6m2xSfP0R66JD4-x4n5wqwKO3owSg2cEC8Tk")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+            }
+        });
 
     }
 

@@ -20,11 +20,16 @@ import android.widget.Toast;
 import com.example.chatapplication.Adapter.FragmentsAdapter;
 import com.example.chatapplication.databinding.ActivityMainBinding;
 import com.example.chatapplication.models.Users;
+import com.google.android.gms.common.util.AndroidUtilsLight;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +54,29 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        if(getIntent().getExtras()!=null) {
+            String uId = getIntent().getExtras().getString("userId");
+            Log.d("myTag", "onCreate: " + uId);
+            assert uId != null;
+            database.getReference().child("Users").child(uId).get().addOnCompleteListener(task -> {
+                Users users = task.getResult().getValue(Users.class);
+                if (users != null) {
+                    Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    intent.putExtra("userID", uId);
+                    intent.putExtra("username", users.getUsername());
+                    intent.putExtra("pfp", users.getProfilePic());
+                    // Put the entire Users object into the intent using Serializable or Parcelable
+                    startActivity(intent);
+                }
+            });
+        } else {
+
+        }
+
         binding.viewPager.setAdapter(new FragmentsAdapter(getSupportFragmentManager()));
         binding.tabLayout.setupWithViewPager(binding.viewPager);
+
+        getFCMToken();
 
         // menu drop down and items
         binding.menuBtn.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +117,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    void getFCMToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()) {
+                    String token = task.getResult();
+                    Log.d("myToken", "onComplete: "+ token);
+                    database.getReference().child("Users").child(Objects.requireNonNull(mAuth.getUid())).child("fcmToken").setValue(token);
+                }
+            }
+        });
+    }
+
 
 
 
