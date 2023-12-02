@@ -3,10 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.ChatsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieFindFriends"
+        android:layout_width="@dimen/dp300"
+        android:layout_height="@dimen/dp300"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_repeatCount="7"
+        app:lottie_rawRes="@raw/main_activity_animation"
+        android:elevation="@dimen/dp5"/>
 
     <ScrollView
         android:layout_width="match_parent"

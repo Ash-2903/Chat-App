@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/light_blue</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="android:navigationBarColor">@color/bg_grey_light</item>
     </style>
 
     <style name="Theme.ChatApplicationChatterly" parent="Base.Theme.ChatApplicationChatterly" />
@@ -73,4 +74,6 @@
     <color name="app_bar_color">@color/light_blue</color>
     <color name="search_bar_color">@color/lighter_blue</color>
 
+<!--    lottie animation home screen-->
+    <item name="main_activity_animation" type="raw">@raw/friends</item>
 </resources>

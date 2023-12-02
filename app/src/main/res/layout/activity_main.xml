@@ -71,7 +71,7 @@
             android:layout_margin="@dimen/dp25"
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/light_blue"
-            app:elevation="@dimen/dp15" />
+            app:elevation="@dimen/dp5" />
 
     </FrameLayout>
 

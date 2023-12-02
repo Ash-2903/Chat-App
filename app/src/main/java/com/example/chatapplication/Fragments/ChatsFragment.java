@@ -52,12 +52,17 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onFriendsReceived(ArrayList<Users> friends) {
                 Log.d("Friends", "Received friends: " + friends.size());
-                UsersAdapter adapter = new UsersAdapter(friends,getContext());
+                if(friends.size() == 0) {
+                    binding.lottieFindFriends.setVisibility(View.VISIBLE);
+                } else {
+                    binding.lottieFindFriends.setVisibility(View.GONE);
+                    UsersAdapter adapter = new UsersAdapter(friends,getContext());
 //                for(int i=0;i< friends.size();i++)
 //                    Log.d("bruno", "onFriendsReceived: " + friends.get(i).getUserId());
-                binding.chatRecyclerView.setAdapter(adapter);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-                binding.chatRecyclerView.setLayoutManager(layoutManager);
+                    binding.chatRecyclerView.setAdapter(adapter);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                    binding.chatRecyclerView.setLayoutManager(layoutManager);
+                }
             }
         });
 
@@ -93,9 +98,7 @@ public class ChatsFragment extends Fragment {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     Users friendModel = new Users();
                                     friendModel.setUsername(snapshot.child("username").getValue(String.class));
-                                    //friendModel.setUserId(snapshot.getKey());
                                     friendModel.setUserId(snapshot.child("userId").getValue(String.class));
-                                    //Log.d("bruno", "onDataChange: " + snapshot.child("userId").getValue(String.class));
                                     if(snapshot.child("profilePic").getValue(String.class)!=null) {
                                         friendModel.setProfilePic(snapshot.child("profilePic").getValue(String.class));
                                     }
