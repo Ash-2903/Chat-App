@@ -6,6 +6,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Notification;
@@ -33,7 +38,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +48,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -54,14 +62,15 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditButtonClickListener {
+public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditButtonClickListener, LifecycleObserver {
 
     ActivityChatBinding binding;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
 
     Message longClickedMessage;
-    String senderRoom, receiverRoom;
+    String senderRoom;
+    String receiverRoom;
     Users receiverUser, senderUser;
 
     @Override
@@ -102,11 +111,26 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
 
         assert recieverId != null;
 
-        // To get Receiver User
+        // To get Receiver User and to set the "Connection Status"
         database.getReference().child("Users").child(recieverId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 receiverUser = snapshot.getValue(Users.class);
+                DataSnapshot currentSnapshot = snapshot.child("connected");
+                if(currentSnapshot.exists()) {
+                    Object connectedValue = currentSnapshot.getValue();
+                    assert connectedValue != null;
+                    if(connectedValue.equals("Online")) {
+                        String connectionStatus = snapshot.child("connected").getValue(String.class);
+                        binding.connection.setText(connectionStatus);
+                    } else {
+                        long timeStamp = (Long) connectedValue;
+                        Date date = new Date(timeStamp);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a  (dd.MM)");
+                        String strTime = "Last seen at " + simpleDateFormat.format(date);
+                        binding.connection.setText(strTime);
+                  }
+                }
             }
 
             @Override
@@ -226,6 +250,21 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
                 }
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     private void setScrollViewToBottom(ChatAdapter chatAdapter) {
@@ -317,4 +356,10 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
         }
 
     }
+
+
+
+
+
+
 }

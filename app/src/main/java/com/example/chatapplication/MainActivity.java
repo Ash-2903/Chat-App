@@ -3,7 +3,11 @@ package com.example.chatapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
+
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,29 +17,26 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.chatapplication.Adapter.FragmentsAdapter;
 import com.example.chatapplication.databinding.ActivityMainBinding;
 import com.example.chatapplication.models.Users;
-import com.google.android.gms.common.util.AndroidUtilsLight;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LifecycleObserver {
 
     ActivityMainBinding binding;
     FirebaseAuth mAuth;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("ThemePrefs", MODE_PRIVATE);
         int savedTheme = sharedPreferences.getInt("SelectedTheme", AppCompatDelegate.MODE_NIGHT_NO);
         AppCompatDelegate.setDefaultNightMode(savedTheme);
+
+        // LifeCycle of the App
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -115,8 +119,55 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Log.d("connectFlag", "onDataChange: inside onDataChange");
+                boolean connected = Boolean.TRUE.equals(snapshot.getValue(Boolean.class));
+                Log.d("connectFlag", "onDataChange: inside onDataChange " + connected );
+                if (connected) {
+                    database.getReference().child("Users").child(Objects.requireNonNull(mAuth.getUid())).child("connected").onDisconnect().setValue(ServerValue.TIMESTAMP);
+                    database.getReference().child("Users").child(mAuth.getUid()).child("connected").setValue("Online");
+                    //Log.d("connectFlag", "onDataChange: the user is online ");
+                } else {
+                    database.getReference().child("Users").child(Objects.requireNonNull(mAuth.getUid())).child("connected").setValue(ServerValue.TIMESTAMP);
+                    //Log.d("connectFlag", "onDataChange: the user is offline");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+
+        });
+
+
+
+
 
     }
+
+    // TO SET THE CONNECTION TO ONLINE / OFFLINE
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onAppBackgrounded() {
+        // App in background
+        Log.d("connectFlag", "onDataChange: the user is offline");
+        FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("connected").setValue(ServerValue.TIMESTAMP);
+    }
+
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onAppForegrounded() {
+        // App in foreground
+        Log.d("connectFlag", "onDataChange: the user is online ");
+        FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("connected").setValue("Online");
+    }
+
+
+
     void getFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
@@ -151,4 +202,7 @@ public class MainActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+
+
 }
