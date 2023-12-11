@@ -26,6 +26,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import com.example.chatapplication.databinding.ActivitySettingsBinding;
 import com.example.chatapplication.models.Users;
@@ -56,7 +57,12 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
     FirebaseDatabase database;
     FirebaseStorage storage;
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +88,8 @@ public class SettingsActivity extends AppCompatActivity implements DatePickerDia
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                 finish();
             }
         });

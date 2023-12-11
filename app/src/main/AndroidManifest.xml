@@ -14,7 +14,7 @@
         android:label="@string/app"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ChatApplicationChatterly"
+        android:theme="@style/Base.Theme.ChatApplicationChatterly"
         tools:targetApi="31">
         <activity
             android:name=".AddFriendsActivity"
