@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
     ActivityMainBinding binding;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +78,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
                     intent.putExtra("pfp", users.getProfilePic());
                     // Put the entire Users object into the intent using Serializable or Parcelable
                     startActivity(intent);
+                    finish();
                 }
             });
-        } else {
-
         }
 
         binding.viewPager.setAdapter(new FragmentsAdapter(getSupportFragmentManager()));
@@ -95,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
                             Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(intent);
+                            finish();
                         } else if(item.getItemId() == R.id.gpChats) {
                             Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         } else if(item.getItemId() == R.id.logout) {
@@ -115,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,AddFriendsActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -188,13 +196,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
 
 
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        finish();
-        startActivity(new Intent(this,MainActivity.class));
-        //overridePendingTransition(R.anim.slide_in_right,R.anim.slide_in_left);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -73,6 +73,14 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
     String receiverRoom;
     Users receiverUser, senderUser;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +102,7 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.EditB
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                 finish();
             }
         });

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.chatapplication.Adapter.FragmentsAdapter;
@@ -28,6 +29,12 @@ public class AddFriendsActivity extends AppCompatActivity {
     FirebaseDatabase database;
     ArrayList<Users> list = new ArrayList<>();
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AddFriendsActivity.this, MainActivity.class));
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
